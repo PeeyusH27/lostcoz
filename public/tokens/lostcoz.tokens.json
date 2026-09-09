@@ -1,0 +1,1053 @@
+{
+  "$schema": "https://www.designtokens.org/schema/",
+  "$name": "Lostcoz Design Tokens",
+  "$version": "1.0.0",
+  "$description": "Design tokens for Lostcoz (card games & community nights for adults) and its first title, Order of Dharma. Derived from the Lostcoz logo v1.5: four players under a lamp, a four-colour brush arc (purple, orange, magenta, cyan) and a cream stencil wordmark on black. Format: W3C Design Tokens (DTCG). `npm run tokens` compiles this file to src/styles/tokens.css (Tailwind v4 @theme).",
+  "color": {
+    "$type": "color",
+    "brand": {
+      "$description": "Exact colours sampled from the logo artwork. These never change; scales and semantic tokens derive from them.",
+      "black": {
+        "$value": "#000000",
+        "$description": "Logo background. Hero and footer ground."
+      },
+      "cream": {
+        "$value": "#FAE7CF",
+        "$description": "Wordmark colour. Primary text on dark."
+      },
+      "purple": {
+        "$value": "#7930BA",
+        "$description": "Arc segment 1 / player 1. Mystery, night."
+      },
+      "orange": {
+        "$value": "#F99A0E",
+        "$description": "Arc segment 2 / the lamp. Warmth, action \u2014 primary CTA."
+      },
+      "magenta": {
+        "$value": "#E51A6F",
+        "$description": "Arc segment 3 / player 4. Energy, play."
+      },
+      "cyan": {
+        "$value": "#01A2E1",
+        "$description": "Arc segment 4 / player 3. Clarity, focus rings."
+      },
+      "lamp": {
+        "$value": "#FFC857",
+        "$description": "The lamp glow. Used only in gradients and glows, never as a fill."
+      }
+    },
+    "ink": {
+      "50": {
+        "$value": "#ECECF1"
+      },
+      "100": {
+        "$value": "#D2D2DA"
+      },
+      "200": {
+        "$value": "#A9A9B5"
+      },
+      "300": {
+        "$value": "#80808F"
+      },
+      "400": {
+        "$value": "#5A5A68"
+      },
+      "500": {
+        "$value": "#3C3C47"
+      },
+      "600": {
+        "$value": "#2B2B34"
+      },
+      "700": {
+        "$value": "#1E1E25"
+      },
+      "800": {
+        "$value": "#141419"
+      },
+      "900": {
+        "$value": "#0B0B0F"
+      },
+      "950": {
+        "$value": "#070709"
+      },
+      "$description": "Cool near-black neutrals. 950 is the page canvas; 50 is the lightest neutral used on dark surfaces."
+    },
+    "cream": {
+      "50": {
+        "$value": "#FFF5E9"
+      },
+      "100": {
+        "$value": "#FAE7CF",
+        "$description": "Brand anchor \u2014 exact logo colour."
+      },
+      "200": {
+        "$value": "#E9D6BE"
+      },
+      "300": {
+        "$value": "#CFBEA8"
+      },
+      "400": {
+        "$value": "#B3A390"
+      },
+      "500": {
+        "$value": "#968878"
+      },
+      "600": {
+        "$value": "#786E62"
+      },
+      "700": {
+        "$value": "#5C564E"
+      },
+      "800": {
+        "$value": "#413E3B"
+      },
+      "900": {
+        "$value": "#2A2724"
+      },
+      "950": {
+        "$value": "#171412"
+      },
+      "$description": "Tonal scale generated from brand.cream (OKLCH). Run `npm run tokens:scales` to regenerate."
+    },
+    "purple": {
+      "50": {
+        "$value": "#F9F5FF"
+      },
+      "100": {
+        "$value": "#F0E6FF"
+      },
+      "200": {
+        "$value": "#E2CFFF"
+      },
+      "300": {
+        "$value": "#D1AEFF"
+      },
+      "400": {
+        "$value": "#BE87FE"
+      },
+      "500": {
+        "$value": "#A466E7"
+      },
+      "600": {
+        "$value": "#8A45CD"
+      },
+      "700": {
+        "$value": "#7930BA",
+        "$description": "Brand anchor \u2014 exact logo colour."
+      },
+      "800": {
+        "$value": "#56008E"
+      },
+      "900": {
+        "$value": "#380060"
+      },
+      "950": {
+        "$value": "#20003B"
+      },
+      "$description": "Tonal scale generated from brand.purple (OKLCH)."
+    },
+    "orange": {
+      "50": {
+        "$value": "#FFF5EB"
+      },
+      "100": {
+        "$value": "#FFE6CF"
+      },
+      "200": {
+        "$value": "#FFCF9F"
+      },
+      "300": {
+        "$value": "#FFAD4F"
+      },
+      "400": {
+        "$value": "#F99A0E",
+        "$description": "Brand anchor \u2014 exact logo colour."
+      },
+      "500": {
+        "$value": "#C37600"
+      },
+      "600": {
+        "$value": "#9E5F00"
+      },
+      "700": {
+        "$value": "#7C4900"
+      },
+      "800": {
+        "$value": "#5B3400"
+      },
+      "900": {
+        "$value": "#3C2000"
+      },
+      "950": {
+        "$value": "#1E1206"
+      },
+      "$description": "Tonal scale generated from brand.orange (OKLCH)."
+    },
+    "magenta": {
+      "50": {
+        "$value": "#FFF3F6"
+      },
+      "100": {
+        "$value": "#FFE3E8"
+      },
+      "200": {
+        "$value": "#FFC8D4"
+      },
+      "300": {
+        "$value": "#FFA1B8"
+      },
+      "400": {
+        "$value": "#FF6D98"
+      },
+      "500": {
+        "$value": "#E51A6F",
+        "$description": "Brand anchor \u2014 exact logo colour."
+      },
+      "600": {
+        "$value": "#CD0060"
+      },
+      "700": {
+        "$value": "#A1004A"
+      },
+      "800": {
+        "$value": "#770035"
+      },
+      "900": {
+        "$value": "#500021"
+      },
+      "950": {
+        "$value": "#300010"
+      },
+      "$description": "Tonal scale generated from brand.magenta (OKLCH)."
+    },
+    "cyan": {
+      "50": {
+        "$value": "#EEF9FF"
+      },
+      "100": {
+        "$value": "#D7EFFF"
+      },
+      "200": {
+        "$value": "#AFE1FF"
+      },
+      "300": {
+        "$value": "#73CCFF"
+      },
+      "400": {
+        "$value": "#2EB3F2"
+      },
+      "500": {
+        "$value": "#01A2E1",
+        "$description": "Brand anchor \u2014 exact logo colour."
+      },
+      "600": {
+        "$value": "#0079AA"
+      },
+      "700": {
+        "$value": "#005E85"
+      },
+      "800": {
+        "$value": "#004462"
+      },
+      "900": {
+        "$value": "#002C41"
+      },
+      "950": {
+        "$value": "#001826"
+      },
+      "$description": "Tonal scale generated from brand.cyan (OKLCH)."
+    },
+    "canvas": {
+      "$value": "{color.ink.950}",
+      "$description": "Page background (dark-first brand)."
+    },
+    "canvas-deep": {
+      "$value": "{color.brand.black}",
+      "$description": "Hero / footer background \u2014 true black like the logo."
+    },
+    "surface": {
+      "1": {
+        "$value": "{color.ink.900}",
+        "$description": "Cards and panels resting on the canvas."
+      },
+      "2": {
+        "$value": "{color.ink.800}",
+        "$description": "Raised panels, popovers."
+      },
+      "3": {
+        "$value": "{color.ink.700}",
+        "$description": "Hover state of surface-2, inputs."
+      },
+      "glass": {
+        "$value": "rgb(11 11 15 / 0.62)",
+        "$description": "Translucent nav / overlays; pair with blur.glass."
+      },
+      "inverse": {
+        "$value": "{color.brand.cream}",
+        "$description": "Light sections (cream) for contrast breaks."
+      }
+    },
+    "fg": {
+      "DEFAULT": {
+        "$value": "{color.brand.cream}",
+        "$description": "Primary text on dark."
+      },
+      "muted": {
+        "$value": "rgb(250 231 207 / 0.72)",
+        "$description": "Secondary text on dark."
+      },
+      "subtle": {
+        "$value": "rgb(250 231 207 / 0.48)",
+        "$description": "Captions, disabled labels on dark."
+      },
+      "inverse": {
+        "$value": "{color.ink.950}",
+        "$description": "Text on cream / on accent fills."
+      },
+      "on-accent": {
+        "$value": "{color.ink.950}",
+        "$description": "Text on orange / cyan / lamp fills."
+      },
+      "on-magenta": {
+        "$value": "#FFFFFF",
+        "$description": "Text on magenta / purple fills."
+      }
+    },
+    "line": {
+      "DEFAULT": {
+        "$value": "rgb(250 231 207 / 0.14)",
+        "$description": "Hairlines and card borders on dark."
+      },
+      "strong": {
+        "$value": "rgb(250 231 207 / 0.32)"
+      },
+      "inverse": {
+        "$value": "rgb(7 7 9 / 0.16)",
+        "$description": "Hairlines on cream."
+      }
+    },
+    "accent": {
+      "DEFAULT": {
+        "$value": "{color.brand.orange}",
+        "$description": "Primary action colour (the lamp)."
+      },
+      "hover": {
+        "$value": "{color.orange.300}"
+      },
+      "active": {
+        "$value": "{color.orange.500}"
+      },
+      "secondary": {
+        "$value": "{color.brand.magenta}",
+        "$description": "Secondary action / highlights."
+      },
+      "tertiary": {
+        "$value": "{color.brand.cyan}",
+        "$description": "Links, focus, informational."
+      },
+      "quiet": {
+        "$value": "{color.brand.purple}",
+        "$description": "Backgrounds, ambient glows."
+      }
+    },
+    "state": {
+      "success": {
+        "$value": "#2FD67B"
+      },
+      "warning": {
+        "$value": "{color.brand.orange}"
+      },
+      "danger": {
+        "$value": "#FF3B5C"
+      },
+      "info": {
+        "$value": "{color.brand.cyan}"
+      }
+    },
+    "focus": {
+      "$value": "{color.brand.cyan}",
+      "$description": "Focus ring colour (2px outline, 3px offset)."
+    },
+    "dharma": {
+      "$description": "Sub-theme for the Order of Dharma game page. Sampled from the card backs, the Phases card and the ability card art.",
+      "emerald": {
+        "300": {
+          "$value": "#35C48A",
+          "$description": "Vadh phase accent (bright)."
+        },
+        "400": {
+          "$value": "#1F7A66"
+        },
+        "500": {
+          "$value": "#0C544C",
+          "$description": "Vadh card teal-green."
+        },
+        "600": {
+          "$value": "#1E3932"
+        },
+        "700": {
+          "$value": "#16312A"
+        },
+        "800": {
+          "$value": "#10201B",
+          "$description": "Velvet texture base."
+        },
+        "900": {
+          "$value": "#0C1916",
+          "$description": "Clan card back base (sampled)."
+        },
+        "950": {
+          "$value": "#0A1512",
+          "$description": "Clan card back \u2014 deepest ground."
+        }
+      },
+      "crimson": {
+        "400": {
+          "$value": "#E4312B",
+          "$description": "Tantra phase accent (bright)."
+        },
+        "500": {
+          "$value": "#9C1B24"
+        },
+        "600": {
+          "$value": "#6D0F1D"
+        },
+        "700": {
+          "$value": "#520D0F"
+        },
+        "800": {
+          "$value": "#3A0E0E",
+          "$description": "Tantra card ground."
+        },
+        "900": {
+          "$value": "#261413",
+          "$description": "Ability card back base (sampled)."
+        },
+        "950": {
+          "$value": "#140808"
+        }
+      },
+      "gold": {
+        "200": {
+          "$value": "#F9E9BF"
+        },
+        "300": {
+          "$value": "#F3D68B"
+        },
+        "400": {
+          "$value": "#E2B857",
+          "$description": "Nirnay phase accent / bright gold."
+        },
+        "500": {
+          "$value": "#C9A24E",
+          "$description": "Primary gold \u2014 headings, rules, dividers."
+        },
+        "600": {
+          "$value": "#A8843A"
+        },
+        "700": {
+          "$value": "#7F6A3F",
+          "$description": "Card frame line (sampled)."
+        },
+        "800": {
+          "$value": "#594A25",
+          "$description": "Card frame, dark edge (sampled)."
+        },
+        "900": {
+          "$value": "#3D3009"
+        }
+      },
+      "parchment": {
+        "DEFAULT": {
+          "$value": "#D1B283",
+          "$description": "Card text panel (sampled)."
+        },
+        "light": {
+          "$value": "#EAD9B8"
+        },
+        "dark": {
+          "$value": "#C69E6D",
+          "$description": "Parchment shadow (sampled)."
+        }
+      },
+      "night": {
+        "$value": "#101012",
+        "$description": "Phases card ground (sampled)."
+      },
+      "phase": {
+        "$description": "One accent per phase, matching the glyph colours on the Phases card.",
+        "drishti": {
+          "$value": "#F5B72B",
+          "$description": "1 \u00b7 Drishti \u2014 the eye. See beyond perception."
+        },
+        "dyut": {
+          "$value": "#9B5CF6",
+          "$description": "2 \u00b7 Dyut \u2014 the swirl. Embrace the flow."
+        },
+        "tantra": {
+          "$value": "#E4312B",
+          "$description": "3 \u00b7 Tantra \u2014 the web. Enter the cosmic web."
+        },
+        "vadh": {
+          "$value": "#35C48A",
+          "$description": "4 \u00b7 Vadh \u2014 the blade. Silence the chaos."
+        },
+        "yudh": {
+          "$value": "#3F7BFF",
+          "$description": "5 \u00b7 Yudh \u2014 the shield. Strike with precision."
+        },
+        "nirnay": {
+          "$value": "#E2B857",
+          "$description": "6 \u00b7 Nirnay \u2014 the scales. Decide, shape destiny."
+        }
+      },
+      "clan": {
+        "surya": {
+          "$value": "#F28C28",
+          "$description": "Surya (sun) clan."
+        },
+        "chandra": {
+          "$value": "#5CC8FF",
+          "$description": "Chandra (moon) clan."
+        },
+        "maayavi": {
+          "$value": "#B36BFF",
+          "$description": "Maayavi \u2014 the wildcard."
+        }
+      }
+    }
+  },
+  "gradient": {
+    "$type": "string",
+    "arc": {
+      "$value": "linear-gradient(90deg, #7930BA 0%, #F99A0E 36%, #E51A6F 68%, #01A2E1 100%)",
+      "$description": "The logo's brush arc, left to right."
+    },
+    "arc-conic": {
+      "$value": "conic-gradient(from 200deg at 50% 50%, #7930BA, #F99A0E, #E51A6F, #01A2E1, #7930BA)",
+      "$description": "Arc as a ring \u2014 for rotating borders and orbs."
+    },
+    "lamp": {
+      "$value": "radial-gradient(60% 60% at 50% 0%, rgb(255 200 87 / 0.55) 0%, rgb(249 154 14 / 0.18) 35%, transparent 70%)",
+      "$description": "Cone of lamp light from the top edge."
+    },
+    "text-warm": {
+      "$value": "linear-gradient(100deg, #F99A0E, #E51A6F)",
+      "$description": "Gradient text \u2014 warm."
+    },
+    "text-cool": {
+      "$value": "linear-gradient(100deg, #01A2E1, #7930BA)",
+      "$description": "Gradient text \u2014 cool."
+    },
+    "dharma-gold": {
+      "$value": "linear-gradient(180deg, #F3D68B 0%, #C9A24E 45%, #7F6A3F 100%)",
+      "$description": "Metallic gold for Dharma headings."
+    },
+    "dharma-veil": {
+      "$value": "linear-gradient(180deg, rgb(10 21 18 / 0) 0%, rgb(10 21 18 / 0.85) 60%, #0A1512 100%)",
+      "$description": "Fade image bottoms into the emerald ground."
+    }
+  },
+  "font": {
+    "$type": "fontFamily",
+    "display": {
+      "$value": [
+        "var(--font-unbounded)",
+        "Unbounded",
+        "system-ui",
+        "sans-serif"
+      ],
+      "$description": "Headlines. Wide geometric \u2014 echoes the stencil wordmark. Weights 500\u2013900."
+    },
+    "body": {
+      "$value": [
+        "var(--font-manrope)",
+        "Manrope",
+        "system-ui",
+        "sans-serif"
+      ],
+      "$description": "UI and paragraphs. Weights 400\u2013800."
+    },
+    "dharma-display": {
+      "$value": [
+        "var(--font-cinzel)",
+        "Cinzel",
+        "Georgia",
+        "serif"
+      ],
+      "$description": "Order of Dharma headings \u2014 engraved capitals."
+    },
+    "dharma-body": {
+      "$value": [
+        "var(--font-garamond)",
+        "EB Garamond",
+        "Georgia",
+        "serif"
+      ],
+      "$description": "Order of Dharma rules text \u2014 matches the printed rulebook."
+    },
+    "mono": {
+      "$value": [
+        "ui-monospace",
+        "SFMono-Regular",
+        "Menlo",
+        "monospace"
+      ],
+      "$description": "Eyebrows, counters, token labels."
+    }
+  },
+  "font-weight": {
+    "$type": "fontWeight",
+    "regular": {
+      "$value": 400
+    },
+    "medium": {
+      "$value": 500
+    },
+    "semibold": {
+      "$value": 600
+    },
+    "bold": {
+      "$value": 700
+    },
+    "black": {
+      "$value": 900
+    }
+  },
+  "text": {
+    "$description": "Fluid type scale. Each token compiles to Tailwind `text-<name>` with size, line-height, letter-spacing and weight. Display sizes are deliberately huge \u2014 the brand shouts.",
+    "display-2xl": {
+      "$type": "typography",
+      "$value": {
+        "fontSize": "clamp(3.75rem, 1.5rem + 9vw, 12rem)",
+        "lineHeight": "0.92",
+        "letterSpacing": "-0.035em",
+        "fontWeight": 800
+      },
+      "$description": "Hero statement, footer wordmark."
+    },
+    "display-xl": {
+      "$type": "typography",
+      "$value": {
+        "fontSize": "clamp(3rem, 1.25rem + 6.5vw, 8.5rem)",
+        "lineHeight": "0.95",
+        "letterSpacing": "-0.03em",
+        "fontWeight": 800
+      },
+      "$description": "Section titles."
+    },
+    "display-lg": {
+      "$type": "typography",
+      "$value": {
+        "fontSize": "clamp(2.5rem, 1.25rem + 4.5vw, 6rem)",
+        "lineHeight": "1",
+        "letterSpacing": "-0.025em",
+        "fontWeight": 700
+      }
+    },
+    "display-md": {
+      "$type": "typography",
+      "$value": {
+        "fontSize": "clamp(1.875rem, 1rem + 2.75vw, 3.75rem)",
+        "lineHeight": "1.05",
+        "letterSpacing": "-0.02em",
+        "fontWeight": 700
+      },
+      "$description": "Manifesto paragraphs, card titles."
+    },
+    "display-sm": {
+      "$type": "typography",
+      "$value": {
+        "fontSize": "clamp(1.5rem, 1rem + 1.5vw, 2.5rem)",
+        "lineHeight": "1.1",
+        "letterSpacing": "-0.015em",
+        "fontWeight": 700
+      }
+    },
+    "title": {
+      "$type": "typography",
+      "$value": {
+        "fontSize": "clamp(1.25rem, 1rem + 0.75vw, 1.75rem)",
+        "lineHeight": "1.2",
+        "letterSpacing": "-0.01em",
+        "fontWeight": 700
+      }
+    },
+    "body-xl": {
+      "$type": "typography",
+      "$value": {
+        "fontSize": "clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem)",
+        "lineHeight": "1.5",
+        "letterSpacing": "0",
+        "fontWeight": 400
+      },
+      "$description": "Lead paragraphs."
+    },
+    "body-lg": {
+      "$type": "typography",
+      "$value": {
+        "fontSize": "clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem)",
+        "lineHeight": "1.55",
+        "letterSpacing": "0",
+        "fontWeight": 400
+      }
+    },
+    "body": {
+      "$type": "typography",
+      "$value": {
+        "fontSize": "1rem",
+        "lineHeight": "1.6",
+        "letterSpacing": "0",
+        "fontWeight": 400
+      }
+    },
+    "body-sm": {
+      "$type": "typography",
+      "$value": {
+        "fontSize": "0.875rem",
+        "lineHeight": "1.5",
+        "letterSpacing": "0",
+        "fontWeight": 400
+      }
+    },
+    "eyebrow": {
+      "$type": "typography",
+      "$value": {
+        "fontSize": "0.75rem",
+        "lineHeight": "1",
+        "letterSpacing": "0.18em",
+        "fontWeight": 600
+      },
+      "$description": "Uppercase section labels."
+    },
+    "caption": {
+      "$type": "typography",
+      "$value": {
+        "fontSize": "0.75rem",
+        "lineHeight": "1.4",
+        "letterSpacing": "0.02em",
+        "fontWeight": 500
+      }
+    },
+    "rule": {
+      "$type": "typography",
+      "$value": {
+        "fontSize": "clamp(1.125rem, 1.05rem + 0.35vw, 1.375rem)",
+        "lineHeight": "1.6",
+        "letterSpacing": "0.005em",
+        "fontWeight": 400
+      },
+      "$description": "Order of Dharma rulebook text (EB Garamond)."
+    }
+  },
+  "tracking": {
+    "$type": "dimension",
+    "tightest": {
+      "$value": "-0.04em"
+    },
+    "tight": {
+      "$value": "-0.02em"
+    },
+    "normal": {
+      "$value": "0em"
+    },
+    "wide": {
+      "$value": "0.08em"
+    },
+    "widest": {
+      "$value": "0.2em"
+    }
+  },
+  "leading": {
+    "$type": "number",
+    "none": {
+      "$value": 0.9
+    },
+    "tight": {
+      "$value": 1.05
+    },
+    "snug": {
+      "$value": 1.2
+    },
+    "normal": {
+      "$value": 1.5
+    },
+    "relaxed": {
+      "$value": 1.65
+    }
+  },
+  "spacing": {
+    "$type": "dimension",
+    "$description": "Base unit is Tailwind's 0.25rem grid. These are the layout rhythms on top of it.",
+    "section": {
+      "$value": "clamp(5rem, 4rem + 6vw, 12rem)",
+      "$description": "Vertical padding between major sections."
+    },
+    "section-sm": {
+      "$value": "clamp(3rem, 2rem + 4vw, 7rem)"
+    },
+    "gutter": {
+      "$value": "clamp(1.25rem, 0.75rem + 2.5vw, 4.5rem)",
+      "$description": "Horizontal page padding."
+    },
+    "stack": {
+      "$value": "clamp(1.5rem, 1rem + 1.5vw, 2.5rem)",
+      "$description": "Gap inside a content stack."
+    }
+  },
+  "container": {
+    "$type": "dimension",
+    "prose": {
+      "$value": "68ch"
+    },
+    "content": {
+      "$value": "80rem"
+    },
+    "wide": {
+      "$value": "100rem"
+    }
+  },
+  "breakpoint": {
+    "$type": "dimension",
+    "sm": {
+      "$value": "40rem"
+    },
+    "md": {
+      "$value": "48rem"
+    },
+    "lg": {
+      "$value": "64rem"
+    },
+    "xl": {
+      "$value": "80rem"
+    },
+    "2xl": {
+      "$value": "96rem"
+    }
+  },
+  "radius": {
+    "$type": "dimension",
+    "xs": {
+      "$value": "4px"
+    },
+    "sm": {
+      "$value": "8px"
+    },
+    "md": {
+      "$value": "12px"
+    },
+    "lg": {
+      "$value": "16px"
+    },
+    "xl": {
+      "$value": "24px"
+    },
+    "2xl": {
+      "$value": "32px"
+    },
+    "pill": {
+      "$value": "999px"
+    },
+    "card": {
+      "$value": "4.5% / 2.9%",
+      "$description": "Playing-card corners for the 9:14 card ratio (round, not elliptical)."
+    }
+  },
+  "shadow": {
+    "$type": "shadow",
+    "card": {
+      "$value": "0 24px 60px -24px rgb(0 0 0 / 0.75), 0 2px 6px rgb(0 0 0 / 0.35)"
+    },
+    "card-lift": {
+      "$value": "0 48px 90px -30px rgb(0 0 0 / 0.8), 0 6px 14px rgb(0 0 0 / 0.35)"
+    },
+    "glow-purple": {
+      "$value": "0 0 48px -8px rgb(121 48 186 / 0.75)"
+    },
+    "glow-orange": {
+      "$value": "0 0 48px -8px rgb(249 154 14 / 0.7)"
+    },
+    "glow-magenta": {
+      "$value": "0 0 48px -8px rgb(229 26 111 / 0.7)"
+    },
+    "glow-cyan": {
+      "$value": "0 0 48px -8px rgb(1 162 225 / 0.7)"
+    },
+    "glow-gold": {
+      "$value": "0 0 56px -10px rgb(201 162 78 / 0.6)"
+    },
+    "inset-line": {
+      "$value": "inset 0 0 0 1px rgb(250 231 207 / 0.14)"
+    }
+  },
+  "blur": {
+    "$type": "dimension",
+    "glass": {
+      "$value": "16px"
+    },
+    "glow": {
+      "$value": "80px"
+    }
+  },
+  "opacity": {
+    "$type": "number",
+    "disabled": {
+      "$value": 0.4
+    },
+    "muted": {
+      "$value": 0.64
+    },
+    "ghost": {
+      "$value": 0.12
+    }
+  },
+  "duration": {
+    "$type": "duration",
+    "$description": "GSAP uses seconds \u2014 divide by 1000.",
+    "xs": {
+      "$value": "100ms",
+      "$description": "Colour/opacity flips."
+    },
+    "sm": {
+      "$value": "180ms",
+      "$description": "Hover states."
+    },
+    "md": {
+      "$value": "300ms",
+      "$description": "Default UI transitions."
+    },
+    "lg": {
+      "$value": "500ms",
+      "$description": "Reveals, magnetic snaps."
+    },
+    "xl": {
+      "$value": "800ms",
+      "$description": "Section entrances."
+    },
+    "2xl": {
+      "$value": "1200ms",
+      "$description": "Hero intro, card flips."
+    }
+  },
+  "ease": {
+    "$type": "cubicBezier",
+    "$description": "$extensions.gsap gives the equivalent GSAP ease string.",
+    "out-expo": {
+      "$value": [
+        0.16,
+        1,
+        0.3,
+        1
+      ],
+      "$extensions": {
+        "gsap": "expo.out"
+      },
+      "$description": "Default entrance."
+    },
+    "out-quart": {
+      "$value": [
+        0.25,
+        1,
+        0.5,
+        1
+      ],
+      "$extensions": {
+        "gsap": "power3.out"
+      }
+    },
+    "in-out-quart": {
+      "$value": [
+        0.76,
+        0,
+        0.24,
+        1
+      ],
+      "$extensions": {
+        "gsap": "power3.inOut"
+      },
+      "$description": "Flips and pinned transitions."
+    },
+    "in-out-expo": {
+      "$value": [
+        0.87,
+        0,
+        0.13,
+        1
+      ],
+      "$extensions": {
+        "gsap": "expo.inOut"
+      }
+    },
+    "out-back": {
+      "$value": [
+        0.34,
+        1.56,
+        0.64,
+        1
+      ],
+      "$extensions": {
+        "gsap": "back.out(1.7)"
+      },
+      "$description": "Playful overshoot \u2014 chips, cursor."
+    },
+    "linear": {
+      "$value": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "$extensions": {
+        "gsap": "none"
+      },
+      "$description": "Marquees and scrubbed scroll."
+    }
+  },
+  "z": {
+    "$type": "number",
+    "below": {
+      "$value": -1
+    },
+    "base": {
+      "$value": 0
+    },
+    "card": {
+      "$value": 1,
+      "$description": "The travelling hero card \u2014 above section fills, below content."
+    },
+    "content": {
+      "$value": 2
+    },
+    "sticky": {
+      "$value": 20
+    },
+    "nav": {
+      "$value": 50
+    },
+    "modal": {
+      "$value": 80
+    },
+    "cursor": {
+      "$value": 100
+    }
+  },
+  "size": {
+    "$type": "dimension",
+    "card-sm": {
+      "$value": "9rem",
+      "$description": "Card width in dense grids."
+    },
+    "card-md": {
+      "$value": "13rem",
+      "$description": "Card width in the Know-your-cards gallery."
+    },
+    "card-lg": {
+      "$value": "18rem",
+      "$description": "Hero / feature card width."
+    },
+    "card-ratio": {
+      "$value": "9 / 14",
+      "$description": "Aspect ratio of every Order of Dharma card (63 \u00d7 98 mm trim)."
+    }
+  }
+}
