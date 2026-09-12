@@ -10,7 +10,7 @@ export default function DharmaCTA() {
       <div className="relative z-[2] mx-auto max-w-wide text-center">
         <SplitReveal as="h2" mode="lines" className="mx-auto max-w-[16ch] font-dharma-display text-display-2xl text-gradient-gold text-balance">Bring the Order to your table.</SplitReveal>
         <Reveal as="p" y={20} className="mx-auto mt-8 max-w-prose text-body-xl text-fg-muted">Get the deck, or play it first at a Lostcoz game night.</Reveal>
-        <Reveal stagger={0.1} y={20} className="mt-12 flex flex-wrap items-center justify-center gap-4">
+        <Reveal stagger={0.1} y={20} data-cta-stack className="group/stack mt-10 flex flex-col items-stretch justify-center gap-3 sm:mt-12 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
           <Button href="mailto:hello@lostcoz.com?subject=Order%20of%20Dharma" size="lg">Get the game</Button>
           <Button href="/#events" variant="ghost" size="lg">Play at a game night</Button>
           <Button href={rulebookPdf} variant="ghost" size="lg" download>Rulebook PDF</Button>

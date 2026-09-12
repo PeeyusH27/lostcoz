@@ -18,10 +18,14 @@ export default function FeaturedGame() {
   useGSAP(() => {
     if (reducedMotion() || !ref.current) return;
     const items = gsap.utils.toArray<HTMLElement>("[data-fan]", ref.current);
+    // the fan has to open less on a phone or the outer cards leave the screen
+    const narrow = window.matchMedia("(max-width: 40rem)");
+    const spread = () => (narrow.matches ? 30 : 48);
+    const twist = () => (narrow.matches ? 7 : 11);
     gsap.fromTo(items, { rotation: 0, xPercent: 0, y: 60 }, {
-      rotation: (i) => (i - 2) * 11, xPercent: (i) => (i - 2) * 48, y: (i) => Math.abs(i - 2) * 16,
+      rotation: (i) => (i - 2) * twist(), xPercent: (i) => (i - 2) * spread(), y: (i) => Math.abs(i - 2) * 16,
       ease: "power2.out",
-      scrollTrigger: { trigger: "[data-fan-wrap]", start: "top 80%", end: "center 45%", scrub: 0.5 },
+      scrollTrigger: { trigger: "[data-fan-wrap]", start: "top 80%", end: "center 45%", scrub: 0.5, invalidateOnRefresh: true },
     });
     gsap.to("[data-fan-glow]", { rotation: 360, duration: 40, repeat: -1, ease: "none" });
   }, { scope: ref });
@@ -46,13 +50,13 @@ export default function FeaturedGame() {
           <Reveal y={20} className="mt-10"><Button href={site.featured.cta.href} size="lg">{site.featured.cta.label}</Button></Reveal>
         </div>
 
-        <div data-fan-wrap className="relative mx-auto flex h-[24rem] w-full max-w-[34rem] items-center justify-center sm:h-[30rem]">
-          <div data-fan-glow aria-hidden="true" className="absolute size-[30rem] rounded-full arc-ring opacity-20 blur-3xl" />
+        <div data-fan-wrap className="relative mx-auto flex h-[20rem] w-full max-w-[34rem] items-center justify-center sm:h-[30rem]">
+          <div data-fan-glow aria-hidden="true" className="absolute size-[18rem] rounded-full arc-ring opacity-20 blur-3xl sm:size-[30rem]" />
           {fan.map((c) => (
-            <div key={c.slug} data-fan className="absolute w-[9.5rem] origin-[50%_120%] sm:w-[12rem]" style={{ zIndex: 1 }}>
+            <div key={c.slug} data-fan className="absolute w-[7.5rem] origin-[50%_120%] sm:w-[12rem]" style={{ zIndex: 1 }}>
               <Tilt max={14} className="card-ratio rounded-card">
                 <div className="size-full overflow-hidden rounded-card shadow-card-lift" data-cursor="text" data-cursor-text="Play">
-                  <Image src={c.image.src} width={c.image.w} height={c.image.h} alt={c.name} sizes="12rem" className="size-full object-cover" draggable={false} />
+                  <Image src={c.image.src} width={c.image.w} height={c.image.h} alt={c.name} sizes="(max-width: 640px) 7.5rem, 12rem" className="size-full object-cover" draggable={false} />
                 </div>
               </Tilt>
             </div>

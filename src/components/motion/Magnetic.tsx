@@ -27,8 +27,8 @@ export default function Magnetic({
   }, { scope: wrap });
 
   return (
-    <div ref={wrap} className={cn("inline-block p-3 -m-3", className)}>
-      <div ref={inner} className="inline-block will-change-transform">{children}</div>
+    <div ref={wrap} className={cn("inline-block p-3 -m-3 group-data-[cta-stack]/stack:max-sm:w-full", className)}>
+      <div ref={inner} className="inline-block will-change-transform group-data-[cta-stack]/stack:max-sm:block group-data-[cta-stack]/stack:max-sm:w-full">{children}</div>
     </div>
   );
 }

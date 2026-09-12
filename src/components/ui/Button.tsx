@@ -28,6 +28,8 @@ const sizes = { sm: "h-10 px-5 text-[0.7rem]", md: "h-12 px-7 text-xs", lg: "h-1
 export default function Button({ href, variant = "primary", size = "md", magnetic = true, arrow = true, className, children, type = "button", onClick, download }: Props) {
   const cls = cn(
     "group/btn inline-flex items-center justify-center gap-3 rounded-pill font-body font-bold uppercase tracking-[0.14em] whitespace-nowrap select-none",
+    // inside a [data-cta-stack] parent the button fills the row on phones
+    "group-data-[cta-stack]/stack:w-full sm:group-data-[cta-stack]/stack:w-auto",
     "transition-[background-color,color,box-shadow,border-color] duration-300 ease-out-expo active:scale-[0.97]",
     variants[variant], sizes[size], className,
   );

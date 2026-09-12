@@ -52,15 +52,15 @@ export default function Hero() {
         <div data-depth="0.2" className="absolute left-1/2 top-[52%] size-[86vmin] -translate-x-1/2 -translate-y-1/2 rounded-full border border-line" />
       </div>
 
-      <div data-hero-content className="relative z-[2] mx-auto flex min-h-[100svh] max-w-wide flex-col justify-end px-gutter pb-[10vh] pt-36">
+      <div data-hero-content className="relative z-[2] mx-auto flex min-h-[100svh] max-w-wide flex-col justify-end px-gutter pb-[12vh] pt-28 sm:pb-[10vh] sm:pt-36">
         <p data-hero-eyebrow className="eyebrow mb-8 text-brand-orange">{site.hero.eyebrow}</p>
         <h1 className="font-display text-display-2xl uppercase">
           <SplitReveal as="span" mode="chars" immediate delay={0.3} className="block">{site.hero.line1}</SplitReveal>
           <span data-hero-line2 className="block text-gradient-arc pb-[0.12em]">{site.hero.line2}</span>
         </h1>
-        <div data-hero-lead className="mt-10 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+        <div data-hero-lead className="mt-8 flex flex-col gap-7 md:mt-10 md:flex-row md:items-end md:justify-between md:gap-8">
           <p className="max-w-[46ch] text-body-xl text-fg-muted text-pretty">{site.hero.lead}</p>
-          <div className="flex flex-wrap items-center gap-4">
+          <div data-cta-stack className="group/stack flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
             <Button href={site.hero.primary.href} size="lg">{site.hero.primary.label}</Button>
             <Button href={site.hero.secondary.href} variant="ghost" size="lg">{site.hero.secondary.label}</Button>
           </div>

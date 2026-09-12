@@ -8,24 +8,24 @@ import { site } from "@/data/site";
 export default function Footer() {
   return (
     <Section as="footer" className="overflow-hidden bg-canvas-deep pb-10 pt-section" inner="max-w-wide">
-      <div className="grid gap-12 border-t border-line pt-14 md:grid-cols-[1.4fr_1fr_1fr]">
-        <div>
+      <div className="grid gap-10 border-t border-line pt-12 sm:grid-cols-2 md:gap-12 md:pt-14 md:grid-cols-[1.4fr_1fr_1fr]">
+        <div className="sm:col-span-2 md:col-span-1">
           <p className="font-display text-display-sm uppercase text-fg">{site.tagline}</p>
           <p className="mt-4 max-w-prose text-fg-muted">{site.footer.line}</p>
         </div>
         <div>
           <p className="eyebrow mb-5">Explore</p>
-          <ul className="space-y-3">
+          <ul className="space-y-1">
             {site.footer.explore.map((l) => (
-              <li key={l.href}><Link href={l.href} className="font-semibold text-fg-muted transition-colors hover:text-brand-orange">{l.label}</Link></li>
+              <li key={l.href}><Link href={l.href} className="inline-flex min-h-11 items-center font-semibold text-fg-muted transition-colors hover:text-brand-orange">{l.label}</Link></li>
             ))}
           </ul>
         </div>
         <div>
           <p className="eyebrow mb-5">Connect</p>
-          <ul className="space-y-3">
+          <ul className="space-y-1">
             {site.socials.map((s) => (
-              <li key={s.label}><a href={s.href} target="_blank" rel="noreferrer" className="font-semibold text-fg-muted transition-colors hover:text-brand-cyan">{s.label}</a></li>
+              <li key={s.label}><a href={s.href} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center font-semibold text-fg-muted transition-colors hover:text-brand-cyan">{s.label}</a></li>
             ))}
           </ul>
         </div>

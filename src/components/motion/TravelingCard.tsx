@@ -18,6 +18,8 @@ export default function TravelingCard({ front, back, className, side = "right" }
 
   useGSAP(() => {
     if (!wrap.current || !tilt.current || !card.current) return;
+    // below md the card isn't rendered at all — skip the scroll rig entirely
+    if (window.matchMedia("(max-width: 47.999rem)").matches) return;
     if (reducedMotion()) { gsap.set(wrap.current, { y: 120 }); return; }
     const w = wrap.current;
     gsap.fromTo(tilt.current, { opacity: 0 }, { opacity: 1, duration: 1.2, delay: 0.4, ease: "power2.out" });
@@ -63,7 +65,9 @@ export default function TravelingCard({ front, back, className, side = "right" }
       ref={wrap}
       aria-hidden="true"
       className={cn(
-        "pointer-events-none fixed top-0 z-[1] card-ratio w-[30vw] max-w-[190px] sm:max-w-[230px] md:w-[17vw] md:max-w-[290px] xl:max-w-[320px]",
+        // hidden below md: on a phone there is no free margin beside the text column,
+        // so this decorative card would sit on top of headlines and body copy.
+        "pointer-events-none fixed top-0 z-[1] hidden card-ratio md:block md:w-[17vw] md:max-w-[290px] xl:max-w-[320px]",
         side === "right" ? "right-[5vw]" : "left-[5vw]",
         className,
       )}
@@ -71,10 +75,10 @@ export default function TravelingCard({ front, back, className, side = "right" }
       <div ref={tilt} className="size-full will-change-transform">
         <div ref={card} className="card3d relative size-full drop-shadow-[0_40px_60px_rgba(0,0,0,0.65)]">
           <div className="face front">
-            <Image src={front.src} alt={front.alt} width={540} height={840} sizes="(max-width: 768px) 30vw, 17vw" priority className="size-full object-cover" />
+            <Image src={front.src} alt={front.alt} width={540} height={840} sizes="17vw" priority className="size-full object-cover" />
           </div>
           <div className="face back">
-            <Image src={back.src} alt={back.alt} width={540} height={840} sizes="(max-width: 768px) 30vw, 17vw" className="size-full object-cover" />
+            <Image src={back.src} alt={back.alt} width={540} height={840} sizes="17vw" className="size-full object-cover" />
           </div>
         </div>
       </div>

@@ -15,13 +15,13 @@ export default function BacksSection() {
       </div>
       <div className="relative z-[2] mx-auto max-w-content">
         <SectionHeading eyebrow="Card backs" title="Three backs. Three secrets." align="center" />
-        <div className="mt-20 grid gap-14 sm:grid-cols-3 sm:gap-8">
+        <div className="mt-12 grid grid-cols-2 gap-8 sm:mt-20 sm:grid-cols-3 sm:gap-8">
           {list.map((b, i) => (
-            <Parallax key={b.title} speed={[0.25, -0.15, 0.3][i]} rotate={[-3, 0, 3][i]}>
+            <Parallax key={b.title} speed={[0.25, -0.15, 0.3][i]} rotate={[-3, 0, 3][i]} className={i === 2 ? "col-span-2 mx-auto w-1/2 sm:col-span-1 sm:w-full" : undefined}>
               <Reveal y={60} delay={i * 0.1}>
-                <Tilt max={12} className="card-ratio mx-auto w-[14rem] rounded-card sm:w-full sm:max-w-[18rem]">
+                <Tilt max={12} className="card-ratio mx-auto w-full max-w-[12rem] rounded-card sm:max-w-[18rem]">
                   <div className="size-full overflow-hidden rounded-card shadow-card-lift" data-cursor="text" data-cursor-text="Turn">
-                    <Image src={b.src} width={b.w} height={b.h} alt={b.title} sizes="18rem" className="size-full object-cover" draggable={false} />
+                    <Image src={b.src} width={b.w} height={b.h} alt={b.title} sizes="(max-width: 640px) 45vw, 18rem" className="size-full object-cover" draggable={false} />
                   </div>
                 </Tilt>
                 <h3 className="mt-8 text-center font-dharma-display text-display-sm text-dharma-gold-300">{b.title}</h3>

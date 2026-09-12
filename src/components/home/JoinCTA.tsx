@@ -26,7 +26,7 @@ export default function JoinCTA() {
       <div className="relative z-[2] mx-auto max-w-wide text-center">
         <SplitReveal as="h2" mode="chars" stagger={0.02} className="font-display text-display-2xl uppercase text-balance">{site.join.title}</SplitReveal>
         <Reveal as="p" y={20} className="mx-auto mt-8 max-w-prose text-body-xl text-fg-muted text-pretty">{site.join.body}</Reveal>
-        <Reveal stagger={0.1} y={20} className="mt-12 flex flex-wrap items-center justify-center gap-4">
+        <Reveal stagger={0.1} y={20} data-cta-stack className="group/stack mt-10 flex flex-col items-stretch justify-center gap-3 sm:mt-12 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
           <Button href={site.join.primary.href} size="lg">{site.join.primary.label}</Button>
           <Button href={site.join.secondary.href} variant="ghost" size="lg">{site.join.secondary.label}</Button>
         </Reveal>

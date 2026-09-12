@@ -21,11 +21,29 @@
   ::selection { background: var(--color-brand-magenta); color: #fff; }
   :focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; border-radius: var(--radius-xs); }
   img, video { display: block; max-width: 100%; height: auto; }
+  /* never let a long word or URL push the page sideways on a narrow screen */
+  h1, h2, h3, h4, p, li, a, dt, dd { overflow-wrap: break-word; }
+  /* iOS: don't auto-inflate text in rotated/landscape views */
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  /* momentum scrolling for the horizontal rails (events, chips, gallery filters) */
+  .no-scrollbar { -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
   strong { font-weight: var(--font-weight-bold); }
   /* hide the native cursor only when the custom one is running on a fine pointer */
-  html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor [role="button"] { cursor: none; }
+  @media (pointer: fine) {
+    html.has-cursor, html.has-cursor a, html.has-cursor button, html.has-cursor [role="button"] { cursor: none; }
+  }
+  /* the custom cursor layer is pointless on touch — keep it out of the paint path */
+  @media (pointer: coarse) { .cursor { display: none; } }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+}
+
+/* Landscape notch: widen the shared gutter so content clears the rounded corners,
+   while full-bleed section backgrounds still reach the screen edge. */
+@media (orientation: landscape) {
+  :root {
+    --spacing-gutter: calc(clamp(1.25rem, 0.75rem + 2.5vw, 4.5rem) + max(env(safe-area-inset-left), env(safe-area-inset-right)));
   }
 }
 
@@ -78,6 +96,73 @@
   background: var(--color-surface-glass);
   backdrop-filter: blur(var(--blur-glass)) saturate(140%);
   -webkit-backdrop-filter: blur(var(--blur-glass)) saturate(140%);
+}
+
+/* ---------- glass morphism system ----------
+   `glass-panel` is the workhorse surface: a frosted pane with a light-catching
+   top edge and an inner hairline. `glass-soft` is the quieter variant for large
+   areas, `glass-raised` adds lift for cards that sit on busy artwork.
+   Blur is expensive on mobile GPUs, so the blur radius steps down on small
+   screens and drops to an opaque fill where backdrop-filter is unsupported. */
+@utility glass-panel {
+  position: relative;
+  background: var(--glass-bg, rgb(250 231 207 / 0.055));
+  backdrop-filter: blur(var(--glass-blur, 18px)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--glass-blur, 18px)) saturate(150%);
+  border: 1px solid var(--glass-border, rgb(250 231 207 / 0.14));
+  box-shadow:
+    inset 0 1px 0 0 rgb(250 231 207 / 0.10),
+    0 12px 36px -18px rgb(0 0 0 / 0.75);
+}
+@utility glass-soft {
+  background: var(--glass-bg, rgb(250 231 207 / 0.035));
+  backdrop-filter: blur(var(--glass-blur, 12px)) saturate(130%);
+  -webkit-backdrop-filter: blur(var(--glass-blur, 12px)) saturate(130%);
+  border: 1px solid rgb(250 231 207 / 0.10);
+}
+@utility glass-raised {
+  position: relative;
+  background: var(--glass-bg, rgb(250 231 207 / 0.07));
+  backdrop-filter: blur(var(--glass-blur, 22px)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--glass-blur, 22px)) saturate(160%);
+  border: 1px solid var(--glass-border, rgb(250 231 207 / 0.18));
+  box-shadow:
+    inset 0 1px 0 0 rgb(250 231 207 / 0.14),
+    0 24px 60px -24px rgb(0 0 0 / 0.85);
+}
+/* specular sheen along the top edge — the cue that reads as "glass" */
+@utility glass-sheen {
+  &::before {
+    content: "";
+    position: absolute; inset: 0; pointer-events: none;
+    border-radius: inherit;
+    background: linear-gradient(160deg, rgb(250 231 207 / 0.16) 0%, rgb(250 231 207 / 0.04) 22%, transparent 55%);
+  }
+}
+
+/* the dharma theme tints its glass gold instead of cream */
+.theme-dharma {
+  --glass-bg: rgb(201 162 78 / 0.07);
+  --glass-border: rgb(201 162 78 / 0.22);
+}
+
+/* Mobile: lighten the blur so scrolling stays at 60fps on mid-range phones. */
+@media (max-width: 48rem) {
+  :root { --glass-blur: 12px; }
+}
+/* No backdrop-filter (older Android WebView / Firefox with it disabled):
+   fall back to a solid-enough fill so text keeps its contrast. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-panel, .glass-soft, .glass-raised { background: var(--color-surface-1); }
+  .glass { background: var(--color-canvas); }
+}
+/* Firefox et al. support backdrop-filter unprefixed; the build can drop the
+   unprefixed declaration from the utilities above, so restate it here. */
+@supports (backdrop-filter: blur(1px)) {
+  .glass { backdrop-filter: blur(var(--blur-glass)) saturate(140%); }
+  .glass-panel { backdrop-filter: blur(var(--glass-blur, 18px)) saturate(150%); }
+  .glass-soft { backdrop-filter: blur(var(--glass-blur, 12px)) saturate(130%); }
+  .glass-raised { backdrop-filter: blur(var(--glass-blur, 22px)) saturate(160%); }
 }
 @utility text-gradient-warm { background: var(--gradient-text-warm); -webkit-background-clip: text; background-clip: text; color: transparent; }
 @utility text-gradient-cool { background: var(--gradient-text-cool); -webkit-background-clip: text; background-clip: text; color: transparent; }
