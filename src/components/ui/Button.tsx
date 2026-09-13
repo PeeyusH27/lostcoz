@@ -22,7 +22,7 @@ const variants: Record<Variant, string> = {
   ghost: "border border-line-strong text-fg hover:bg-fg hover:text-fg-inverse hover:border-transparent",
   inverse: "bg-fg text-fg-inverse hover:bg-brand-orange",
 };
-const sizes = { sm: "h-10 px-5 text-[0.7rem]", md: "h-12 px-7 text-xs", lg: "h-14 px-9 text-sm" };
+const sizes = { sm: "h-11 px-5 text-[0.7rem]", md: "h-12 px-7 text-xs", lg: "h-14 px-9 text-sm" };
 
 /** Pill button. `magnetic` wraps it so it leans toward the pointer. */
 export default function Button({ href, variant = "primary", size = "md", magnetic = true, arrow = true, className, children, type = "button", onClick, download }: Props) {

@@ -20,6 +20,9 @@ export default function HowItWorks() {
         <Reveal stagger={0.12} y={50} className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {site.how.steps.map((s, i) => (
             <div key={s.title} className="group">
+              <p className="mb-2 font-mono text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-ink-500">
+                Step {i + 1} of {site.how.steps.length}
+              </p>
               <span className="block font-display text-display-xl leading-none text-ink-950 transition-transform duration-700 ease-out-expo group-hover:-translate-y-2" data-skew>0{i + 1}</span>
               <h3 className="mt-6 font-display text-title uppercase">{s.title}</h3>
               <p className="mt-2 text-ink-600 text-pretty">{s.body}</p>

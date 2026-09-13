@@ -69,7 +69,7 @@ export default function CardsGallery() {
         <SectionHeading
           eyebrow="Know your cards · 55 in the box"
           title="Every card, explained."
-          lead="Tap a card to flip it. Ranks decide the order abilities resolve in — 1 always goes first."
+          lead="Tap a card to flip it. Ranks decide the order abilities resolve in, and 1 always goes first."
         />
 
         <Reveal stagger={0.04} y={12} className="-mx-gutter mt-10 flex snap-x gap-2 overflow-x-auto px-gutter pb-1 scroll-px-gutter no-scrollbar sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 md:mt-12" as="div">

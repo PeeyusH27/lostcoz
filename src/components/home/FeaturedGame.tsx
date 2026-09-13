@@ -1,8 +1,10 @@
 "use client";
 import { useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { gsap, useGSAP, reducedMotion } from "@/lib/gsap";
 import { site } from "@/data/site";
+import { links } from "@/data/links";
 import { cards } from "@/data/dharma";
 import Button from "@/components/ui/Button";
 import Reveal from "@/components/motion/Reveal";
@@ -10,6 +12,25 @@ import SplitReveal from "@/components/motion/SplitReveal";
 import Tilt from "@/components/motion/Tilt";
 
 const fanSlugs = ["surya", "bhasm", "dyut", "yudh", "chandra"];
+
+/**
+ * Wraps the card fan in a link. Points at the how-to-play video once it exists
+ * (opening the YouTube app on mobile), otherwise at the game page, so the graphic
+ * is always clickable.
+ */
+function CardFanLink({ children }: { children: React.ReactNode }) {
+  const video = links.oodHowToVideo;
+  const cls = "group/fan block rounded-2xl";
+  return video ? (
+    <a href={video} target="_blank" rel="noreferrer" className={cls} aria-label="Watch how to play Order of Dharma" data-cursor="text" data-cursor-text="Watch">
+      {children}
+    </a>
+  ) : (
+    <Link href={site.featured.cta.href} className={cls} aria-label="Explore the Order of Dharma cards" data-cursor="text" data-cursor-text="Explore">
+      {children}
+    </Link>
+  );
+}
 
 export default function FeaturedGame() {
   const ref = useRef<HTMLElement>(null);
@@ -47,21 +68,31 @@ export default function FeaturedGame() {
           <Reveal stagger={0.08} y={16} className="mt-8 flex flex-wrap gap-2">
             {site.featured.facts.map((f) => <span key={f} className="rounded-pill border border-line px-4 py-2 font-body text-caption uppercase tracking-widest text-fg-muted">{f}</span>)}
           </Reveal>
-          <Reveal y={20} className="mt-10"><Button href={site.featured.cta.href} size="lg">{site.featured.cta.label}</Button></Reveal>
+          <Reveal y={20} data-cta-stack className="group/stack mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+            <Button href={site.featured.cta.href} size="lg">{site.featured.cta.label}</Button>
+            <Button href={site.featured.buy.href} variant="ghost" size="lg">{site.featured.buy.label}</Button>
+          </Reveal>
         </div>
 
-        <div data-fan-wrap className="relative mx-auto flex h-[20rem] w-full max-w-[34rem] items-center justify-center sm:h-[30rem]">
-          <div data-fan-glow aria-hidden="true" className="absolute size-[18rem] rounded-full arc-ring opacity-20 blur-3xl sm:size-[30rem]" />
-          {fan.map((c) => (
-            <div key={c.slug} data-fan className="absolute w-[7.5rem] origin-[50%_120%] sm:w-[12rem]" style={{ zIndex: 1 }}>
-              <Tilt max={14} className="card-ratio rounded-card">
-                <div className="size-full overflow-hidden rounded-card shadow-card-lift" data-cursor="text" data-cursor-text="Play">
-                  <Image src={c.image.src} width={c.image.w} height={c.image.h} alt={c.name} sizes="(max-width: 640px) 7.5rem, 12rem" className="size-full object-cover" draggable={false} />
-                </div>
-              </Tilt>
-            </div>
-          ))}
-        </div>
+        {/* The whole fan is one link. Once the how-to-play video is published it opens
+            that; until then it falls back to the same place as "Explore the cards". */}
+        <CardFanLink>
+          <div data-fan-wrap className="relative mx-auto flex h-[20rem] w-full max-w-[34rem] items-center justify-center sm:h-[30rem]">
+            <div data-fan-glow aria-hidden="true" className="absolute size-[18rem] rounded-full arc-ring opacity-20 blur-3xl sm:size-[30rem]" />
+            {fan.map((c) => (
+              <div key={c.slug} data-fan className="absolute w-[7.5rem] origin-[50%_120%] sm:w-[12rem]" style={{ zIndex: 1 }}>
+                <Tilt max={14} className="card-ratio rounded-card">
+                  <div className="size-full overflow-hidden rounded-card shadow-card-lift">
+                    <Image src={c.image.src} width={c.image.w} height={c.image.h} alt={c.name} sizes="(max-width: 640px) 7.5rem, 12rem" className="size-full object-cover" draggable={false} />
+                  </div>
+                </Tilt>
+              </div>
+            ))}
+            <span className="pointer-events-none absolute bottom-0 left-1/2 z-[2] -translate-x-1/2 whitespace-nowrap rounded-pill glass-panel px-4 py-2 font-body text-caption font-bold uppercase tracking-widest text-dharma-gold-300">
+              {links.oodHowToVideo ? "Watch how to play" : "Explore the cards"} →
+            </span>
+          </div>
+        </CardFanLink>
       </div>
     </section>
   );

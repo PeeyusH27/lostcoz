@@ -3,6 +3,7 @@ import Hero from "@/components/home/Hero";
 import MarqueeStrip from "@/components/home/MarqueeStrip";
 import Manifesto from "@/components/home/Manifesto";
 import FeaturedGame from "@/components/home/FeaturedGame";
+import LatestVideo from "@/components/home/LatestVideo";
 import Events from "@/components/home/Events";
 import HowItWorks from "@/components/home/HowItWorks";
 import Community from "@/components/home/Community";
@@ -20,6 +21,7 @@ export default function HomePage() {
       <MarqueeStrip />
       <Manifesto />
       <FeaturedGame />
+      <LatestVideo />
       <Events />
       <HowItWorks />
       <Community />

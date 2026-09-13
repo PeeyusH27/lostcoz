@@ -16,9 +16,20 @@ export default function Community() {
         <Parallax speed={0.3} className="col-span-2 row-span-2">
           <Reveal scale={0.94} y={40}>
             <Tilt max={5} className="rounded-2xl">
-              <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-2xl bg-canvas-deep p-5 hairline grain sm:p-8" data-cursor="link">
-                <div aria-hidden="true" className="absolute inset-x-0 top-0 h-2/3 lamp-glow" />
-                <Image src="/brand/logo-emblem.png" alt="Four friends playing cards under a lamp — the Lostcoz emblem" width={1600} height={1034} sizes="(max-width: 768px) 90vw, 40vw" className="relative w-full animate-float" />
+              {/* the real thing: an actual Lostcoz table, not the illustrated emblem */}
+              <div className="group/hero relative flex aspect-square items-end overflow-hidden rounded-2xl bg-canvas-deep hairline" data-cursor="link">
+                <Image
+                  src="/photos/lostcoz-gamenight.jpg"
+                  alt="A Lostcoz game night: seven people around a table mid-game"
+                  fill priority={false}
+                  sizes="(max-width: 768px) 92vw, 44vw"
+                  className="object-cover transition-transform duration-[1200ms] ease-out-expo group-hover/hero:scale-105"
+                />
+                <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgb(7_7_9/0.88)_100%)]" />
+                <div aria-hidden="true" className="absolute inset-x-0 top-0 h-1/2 lamp-glow opacity-60 mix-blend-screen" />
+                <p className="relative z-[1] p-5 font-display text-title uppercase leading-tight text-fg drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)] sm:p-7">
+                  A real Lostcoz table
+                </p>
               </div>
             </Tilt>
           </Reveal>
@@ -28,15 +39,18 @@ export default function Community() {
             <Reveal y={40} delay={i * 0.05}>
               <Tilt max={10} className="rounded-2xl">
                 <div
-                  className="glass-panel glass-sheen flex aspect-square items-end rounded-2xl p-4 sm:p-5"
-                  style={{
-                    // tint the frosted pane with the tile's hue rather than replacing it
-                    ["--glass-bg" as string]: `color-mix(in oklab, ${t.hue} 22%, transparent)`,
-                    ["--glass-border" as string]: `color-mix(in oklab, ${t.hue} 35%, transparent)`,
-                  }}
+                  className="group/tile relative flex aspect-square items-end overflow-hidden rounded-2xl p-4 hairline sm:p-5"
+                  style={{ ["--glass-border" as string]: `color-mix(in oklab, ${t.hue} 35%, transparent)` }}
                   data-cursor="link"
                 >
-                  <p className="relative z-[1] font-display text-title uppercase leading-tight" style={{ color: t.hue }}>{t.label}</p>
+                  <Image
+                    src={t.image} alt="" fill sizes="(max-width: 768px) 46vw, 22vw"
+                    className="object-cover transition-transform duration-700 ease-out-expo group-hover/tile:scale-105"
+                  />
+                  {/* hue wash + bottom scrim so the label stays legible on any photo */}
+                  <div aria-hidden="true" className="absolute inset-0 mix-blend-soft-light opacity-80" style={{ background: t.hue }} />
+                  <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,rgb(7_7_9/0.15)_0%,rgb(7_7_9/0.82)_100%)]" />
+                  <p className="relative z-[1] font-display text-[clamp(0.82rem,3.4vw,1.35rem)] uppercase leading-[1.15] text-balance text-fg drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]">{t.label}</p>
                 </div>
               </Tilt>
             </Reveal>

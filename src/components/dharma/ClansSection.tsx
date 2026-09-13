@@ -10,7 +10,7 @@ import Tilt from "@/components/motion/Tilt";
 const clanCopy: Record<string, string> = {
   surya: "Five cards, ranks 1 to 5. Sun-born. Rank 1 is the highest.",
   chandra: "Five cards, ranks 1 to 5. Moon-born. Rank 1 is the highest.",
-  maayavi: "One card, dealt only with an odd number of players. Belongs to no one — until Nirnay.",
+  maayavi: "One card, dealt only with an odd number of players. Belongs to no one, until Nirnay.",
 };
 
 /** Three clan cards flip from their shared back to their faces as they scroll into view. */
@@ -31,7 +31,7 @@ export default function ClansSection() {
   return (
     <section ref={ref} className="relative px-gutter py-section">
       <div className="relative z-[2] mx-auto max-w-content">
-        <SectionHeading eyebrow="The Clans" title="Two Clans. One Dharma." lead="Every round you're dealt a Clan in secret. Your allies are at the table — you just don't know which chairs they're in." />
+        <SectionHeading eyebrow="The Clans" title="Two Clans. One Dharma." lead="Every round you're dealt a Clan in secret. Your allies are at the table. You just don't know which chairs they're in." />
         <div className="mt-12 grid grid-cols-2 gap-6 sm:mt-20 sm:grid-cols-3 sm:gap-6">
           {clans.map((c, i) => (
             <Reveal key={c.slug} y={40} delay={i * 0.1} className={i === 2 ? "col-span-2 mx-auto w-1/2 sm:col-span-1 sm:w-full" : undefined}>

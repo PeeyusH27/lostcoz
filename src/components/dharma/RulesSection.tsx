@@ -8,7 +8,7 @@ export default function RulesSection() {
   return (
     <section id="rules" className="relative scroll-mt-20 px-gutter py-section">
       <div className="relative z-[2] mx-auto max-w-content">
-        <SectionHeading eyebrow="Rulebook · v1.7" title="How to play." lead="The full rules, as printed. Read them once — then let the table teach you the rest." />
+        <SectionHeading eyebrow="Rulebook · v1.7" title="How to play." lead="The full rules, as printed. Read them once, then let the table teach you the rest." />
         <div className="mt-10 grid gap-8 md:mt-16 lg:grid-cols-[14rem_1fr] lg:gap-24">
           {/* On mobile the contents become a swipeable chip rail pinned under the nav;
               from lg it returns to a sticky sidebar list. */}

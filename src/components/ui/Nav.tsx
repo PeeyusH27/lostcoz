@@ -50,13 +50,20 @@ export default function Nav() {
       <header
         ref={header}
         className={cn(
-          "fixed inset-x-0 top-0 transition-[background-color,backdrop-filter,border-color] duration-500",
+          "fixed inset-x-0 top-0 border-b transition-[background-color,backdrop-filter,border-color,box-shadow] duration-500",
           open ? "z-[90]" : "z-(--z-nav)",
-          "border-b border-transparent [&.is-scrolled]:glass [&.is-scrolled]:border-line",
-          isDharma && "theme-dharma bg-transparent",
+          // Always frosted. At the top the pane is barely there so the hero reads
+          // through it; once scrolled it firms up and gains an edge + lift.
+          "nav-glass border-transparent",
+          "[&.is-scrolled]:border-line [&.is-scrolled]:shadow-[0_12px_32px_-20px_rgb(0_0_0/0.9)]",
+          isDharma && "theme-dharma",
         )}
-        style={isDharma ? { background: "transparent" } : undefined}
       >
+        {/* specular highlight along the bottom edge — the cue that reads as glass */}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(90deg,transparent,var(--color-line-strong),transparent)] opacity-0 transition-opacity duration-500 [.is-scrolled_&]:opacity-100"
+        />
         <div className="mx-auto flex h-[calc(4.5rem+env(safe-area-inset-top))] max-w-wide items-center justify-between px-gutter pt-[env(safe-area-inset-top)]">
           <Link href="/" aria-label="Lostcoz — home" data-cursor="link" className="relative z-[2] block">
             <Image src="/brand/logo-wordmark-800.png" alt="Lostcoz" width={800} height={144} priority className="h-6 w-auto md:h-7" />
@@ -106,7 +113,20 @@ export default function Nav() {
         </nav>
         <div className="mt-10 flex flex-wrap items-center gap-4">
           <Button href={site.cta.href} magnetic={false}>{site.cta.label}</Button>
-          {site.socials.map((s) => <a key={s.label} href={s.href} className="eyebrow inline-flex min-h-11 items-center hover:text-fg" target="_blank" rel="noreferrer">{s.label}</a>)}
+          {site.socials.map((s) => {
+            const external = s.href.startsWith("http");
+            return (
+              <a
+                key={s.label} href={s.href}
+                target={external ? "_blank" : undefined}
+                rel={external ? "noreferrer" : undefined}
+                onClick={() => setOpen(false)}
+                className="eyebrow inline-flex min-h-11 items-center hover:text-fg"
+              >
+                {s.label}
+              </a>
+            );
+          })}
         </div>
       </div>
     </>

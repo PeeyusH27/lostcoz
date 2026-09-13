@@ -60,9 +60,24 @@ export default function Hero() {
         </h1>
         <div data-hero-lead className="mt-8 flex flex-col gap-7 md:mt-10 md:flex-row md:items-end md:justify-between md:gap-8">
           <p className="max-w-[46ch] text-body-xl text-fg-muted text-pretty">{site.hero.lead}</p>
-          <div data-cta-stack className="group/stack flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
-            <Button href={site.hero.primary.href} size="lg">{site.hero.primary.label}</Button>
-            <Button href={site.hero.secondary.href} variant="ghost" size="lg">{site.hero.secondary.label}</Button>
+          <div className="flex flex-col gap-5">
+            <div data-cta-stack className="group/stack flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+              <Button href={site.featured.buy.href} size="lg">{site.featured.buy.label}</Button>
+              <Button href={site.hero.secondary.href} variant="ghost" size="lg">{site.hero.secondary.label}</Button>
+            </div>
+            {/* social links sit directly under the two CTAs */}
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
+              {[site.socials[0], site.socials[1]].map((soc) => (
+                <a
+                  key={soc.label} href={soc.href} target="_blank" rel="noreferrer"
+                  className="group/soc inline-flex min-h-11 items-center gap-2 font-body text-caption font-bold uppercase tracking-widest text-fg-muted transition-colors hover:text-fg"
+                >
+                  <span aria-hidden="true" className="text-base leading-none">{soc.label === "Instagram" ? "◎" : "▸"}</span>
+                  {soc.label}
+                  <span aria-hidden="true" className="opacity-0 transition-all duration-300 group-hover/soc:translate-x-0.5 group-hover/soc:opacity-100">→</span>
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </div>

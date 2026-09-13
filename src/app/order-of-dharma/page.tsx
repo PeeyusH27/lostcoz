@@ -11,7 +11,7 @@ import { backs } from "@/data/dharma";
 
 export const metadata: Metadata = {
   title: "Order of Dharma",
-  description: "A Lostcoz original for 4–11 players. Two Clans, one Dharma, six phases — and you don't know your allies from your enemies. Rules, phases and every card explained.",
+  description: "A Lostcoz original for 4–11 players. Two Clans, one Dharma, six phases, and you don't know your allies from your enemies. Rules, phases and every card explained.",
   openGraph: { images: ["/cards/backs/clan-back.jpg"] },
 };
 

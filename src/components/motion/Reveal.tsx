@@ -18,11 +18,13 @@ type Props = {
   scrub?: boolean;
   scale?: number;
   rotate?: number;
+  /** anything else (data-* attributes, aria-*) is forwarded to the rendered element */
+  [key: `data-${string}`]: unknown;
 };
 
 /** Fade + rise into view on scroll. With `stagger`, animates the element's children one by one. */
 export default function Reveal({
-  children, as: Tag = "div", className, y = 48, stagger, delay = 0, start = "top 85%", scrub = false, scale, rotate,
+  children, as: Tag = "div", className, y = 48, stagger, delay = 0, start = "top 85%", scrub = false, scale, rotate, ...rest
 }: Props) {
   const ref = useRef<HTMLElement>(null);
   useGSAP(() => {
@@ -36,5 +38,5 @@ export default function Reveal({
         : { trigger: ref.current, start, toggleActions: "play none none none", once: true },
     });
   }, { scope: ref });
-  return <Tag ref={ref} className={cn(className)}>{children}</Tag>;
+  return <Tag ref={ref} className={cn(className)} {...rest}>{children}</Tag>;
 }

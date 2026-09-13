@@ -3,6 +3,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import { gsap, useGSAP, reducedMotion } from "@/lib/gsap";
 import { backs, facts, rulebookPdf } from "@/data/dharma";
+import { links } from "@/data/links";
 import Button from "@/components/ui/Button";
 import Tilt from "@/components/motion/Tilt";
 
@@ -45,10 +46,11 @@ export default function DharmaHero() {
             <span data-h-line className="block text-gradient-gold pb-[0.08em]">Dharma</span>
           </h1>
           <p data-h-lead className="mt-8 max-w-[44ch] text-body-xl text-fg-muted text-pretty">
-            A battle between two Clans to establish their Dharma. Outwit the rival Clan and eliminate them — the catch is, you don&apos;t know your ally or your enemies.
+            A battle between two Clans to establish their Dharma. Outwit the rival Clan and eliminate them. The catch is, you don&apos;t know your ally or your enemies.
           </p>
           <div data-h-cta data-cta-stack className="group/stack mt-8 flex flex-col items-stretch gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
             <Button href="#rules" size="lg">How to play</Button>
+            <Button href={links.shiprocket} variant="secondary" size="lg">Buy the game</Button>
             <Button href={rulebookPdf} variant="ghost" size="lg" download>Rulebook PDF</Button>
           </div>
           <dl className="mt-12 grid grid-cols-2 gap-x-4 gap-y-7 min-[420px]:grid-cols-3 sm:mt-14 sm:grid-cols-5">
@@ -61,9 +63,11 @@ export default function DharmaHero() {
           </dl>
         </div>
 
+        {/* The fan reads as atmosphere behind the copy: it is held back in opacity and,
+            from lg, allowed to run off the right edge so only part of it is on screen. */}
         <div
           data-h-cards
-          className="relative mx-auto flex h-[19rem] w-full max-w-[36rem] items-center justify-center [--fan-rot:13deg] [--fan-spread:46%] sm:h-[26rem] sm:[--fan-rot:16deg] sm:[--fan-spread:58%] lg:h-[32rem]"
+          className="relative mx-auto flex h-[19rem] w-full max-w-[36rem] items-center justify-center opacity-70 [--fan-rot:13deg] [--fan-spread:46%] sm:h-[26rem] sm:[--fan-rot:16deg] sm:[--fan-spread:58%] lg:h-[32rem] lg:-mr-[16vw] lg:max-w-none lg:opacity-60 lg:[mask-image:linear-gradient(to_right,transparent,black_18%,black_72%,transparent)]"
         >
           <div aria-hidden="true" className="absolute size-[16rem] rounded-full bg-dharma-gold-500/20 blur-[100px] animate-pulse-glow sm:size-[26rem]" />
           {fan.map((c) => (

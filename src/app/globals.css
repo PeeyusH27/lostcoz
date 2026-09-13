@@ -140,6 +140,33 @@
   }
 }
 
+/* Site header. Frosted at every scroll position: light and airy over the hero,
+   firmer once the page scrolls under it. Declared as a plain class (not @utility)
+   so both the prefixed and unprefixed backdrop-filter survive the build. */
+.nav-glass {
+  background: var(--nav-glass-bg, rgb(11 11 15 / 0.32));
+  -webkit-backdrop-filter: blur(var(--nav-glass-blur, 14px)) saturate(150%);
+  backdrop-filter: blur(var(--nav-glass-blur, 14px)) saturate(150%);
+}
+.nav-glass.is-scrolled {
+  --nav-glass-bg: rgb(11 11 15 / 0.66);
+  --nav-glass-blur: 22px;
+  box-shadow: inset 0 1px 0 0 rgb(250 231 207 / 0.07);
+}
+/* the Order of Dharma theme tints the same pane emerald/gold */
+.theme-dharma.nav-glass { --nav-glass-bg: rgb(10 21 18 / 0.34); }
+.theme-dharma.nav-glass.is-scrolled {
+  --nav-glass-bg: rgb(10 21 18 / 0.72);
+  box-shadow: inset 0 1px 0 0 rgb(201 162 78 / 0.12);
+}
+/* the mobile menu covers the screen anyway; no need to pay for a second blur */
+@media (max-width: 48rem) { .nav-glass { --nav-glass-blur: 12px; } }
+/* no backdrop-filter: fall back to an opaque bar so the links stay readable */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .nav-glass { background: var(--color-canvas); }
+  .theme-dharma.nav-glass { background: var(--color-dharma-emerald-950); }
+}
+
 /* the dharma theme tints its glass gold instead of cream */
 .theme-dharma {
   --glass-bg: rgb(201 162 78 / 0.07);
@@ -156,14 +183,17 @@
   .glass-panel, .glass-soft, .glass-raised { background: var(--color-surface-1); }
   .glass { background: var(--color-canvas); }
 }
-/* Firefox et al. support backdrop-filter unprefixed; the build can drop the
-   unprefixed declaration from the utilities above, so restate it here. */
+/* The build emits only `-webkit-backdrop-filter` for the glass utilities, so on
+   engines that support the property unprefixed ONLY (current Chrome, Firefox) the
+   blur never applies. Restate it unprefixed for each utility, plus the site
+   header's scrolled state, which uses the `glass` utility through a variant. */
 @supports (backdrop-filter: blur(1px)) {
   .glass { backdrop-filter: blur(var(--blur-glass)) saturate(140%); }
   .glass-panel { backdrop-filter: blur(var(--glass-blur, 18px)) saturate(150%); }
   .glass-soft { backdrop-filter: blur(var(--glass-blur, 12px)) saturate(130%); }
   .glass-raised { backdrop-filter: blur(var(--glass-blur, 22px)) saturate(160%); }
 }
+
 @utility text-gradient-warm { background: var(--gradient-text-warm); -webkit-background-clip: text; background-clip: text; color: transparent; }
 @utility text-gradient-cool { background: var(--gradient-text-cool); -webkit-background-clip: text; background-clip: text; color: transparent; }
 @utility text-gradient-arc  { background: var(--gradient-arc); -webkit-background-clip: text; background-clip: text; color: transparent; }

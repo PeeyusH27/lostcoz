@@ -4,6 +4,7 @@ import Section from "@/components/ui/Section";
 import Reveal from "@/components/motion/Reveal";
 import Parallax from "@/components/motion/Parallax";
 import { site } from "@/data/site";
+import { links } from "@/data/links";
 
 export default function Footer() {
   return (
@@ -24,9 +25,26 @@ export default function Footer() {
         <div>
           <p className="eyebrow mb-5">Connect</p>
           <ul className="space-y-1">
-            {site.socials.map((s) => (
-              <li key={s.label}><a href={s.href} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center font-semibold text-fg-muted transition-colors hover:text-brand-cyan">{s.label}</a></li>
-            ))}
+            {site.socials.map((s) => {
+              const external = s.href.startsWith("http");
+              return (
+                <li key={s.label}>
+                  <a
+                    href={s.href}
+                    target={external ? "_blank" : undefined}
+                    rel={external ? "noreferrer" : undefined}
+                    className="inline-flex min-h-11 items-center font-semibold text-fg-muted transition-colors hover:text-brand-cyan"
+                  >
+                    {s.label}
+                  </a>
+                </li>
+              );
+            })}
+            <li>
+              <a href={links.tel} className="inline-flex min-h-11 items-center font-semibold text-fg-muted transition-colors hover:text-brand-cyan">
+                {site.phone}
+              </a>
+            </li>
           </ul>
         </div>
       </div>
