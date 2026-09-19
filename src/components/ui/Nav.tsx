@@ -80,7 +80,8 @@ export default function Nav() {
             })}
           </nav>
           <div className="flex items-center gap-3">
-            <div className="hidden md:block"><Button href="/pay" variant="ghost" size="sm" magnetic={false}>Pay</Button></div>
+            {/* Pay CTA hidden for now — the /pay route still works if you link it directly.
+                <div className="hidden md:block"><Button href="/pay" variant="ghost" size="sm" magnetic={false}>Pay</Button></div> */}
             <div className="hidden md:block"><Button href={site.cta.href} size="sm" magnetic={false}>{site.cta.label}</Button></div>
             <button
               type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-controls="mobile-menu"
@@ -114,7 +115,7 @@ export default function Nav() {
         </nav>
         <div className="mt-10 flex flex-wrap items-center gap-4">
           <Button href={site.cta.href} magnetic={false}>{site.cta.label}</Button>
-          <Button href="/pay" variant="ghost" magnetic={false}>Pay</Button>
+          {/* <Button href="/pay" variant="ghost" magnetic={false}>Pay</Button> */}
           {site.socials.map((s) => {
             const external = s.href.startsWith("http");
             return (

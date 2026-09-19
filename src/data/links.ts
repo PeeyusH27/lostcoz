@@ -25,10 +25,17 @@ export const links = {
   /** Direct chat with the organisers (private events, corporate enquiries). */
   whatsappDirect: `https://wa.me/${contact.phone}`,
 
-  instagram: "https://instagram.com/lostcoz", // TODO: confirm the real handle
+  instagram: "https://www.instagram.com/lostcozgames/",
   youtube: "https://www.youtube.com/@lostcoz", // TODO: confirm the real channel URL
 
-  /** Storefront for buying a deck. */
+  /**
+   * Where every "buy the game" CTA points. Until the first print run ships that
+   * is the ₹499 pre-booking page; swap it back to `shiprocket` on launch day and
+   * every button on the site follows.
+   */
+  prebook: "/prebook",
+
+  /** Storefront for buying a deck. Not linked anywhere yet — see `prebook`. */
   shiprocket: "https://lostcoz.shiprocket.co", // TODO: real Shiprocket checkout URL
 
   /** Latest video — shown in the "Latest video" section on the home page. */

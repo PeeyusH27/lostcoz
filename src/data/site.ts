@@ -16,7 +16,8 @@ export const site = {
     { label: "Instagram", href: links.instagram },
     { label: "YouTube", href: links.youtube },
     { label: "WhatsApp", href: links.whatsappCommunity },
-    { label: "E-mail", href: mailTo("Hello Lostcoz") },
+    // Hidden for now — re-enable to show E-mail in the footer and the mobile menu.
+    // { label: "E-mail", href: mailTo("Hello Lostcoz") },
   ],
   nav: [
     { label: "Order of Dharma", href: "/order-of-dharma" },
@@ -77,7 +78,7 @@ export const site = {
       "A battle between two Clans to establish their Dharma. Outwit and eliminate the rival Clan. The catch is, you don't know your allies from your enemies.",
     facts: ["4–11 players", "55 cards", "Six phases per round", "Bluffing · deduction · betrayal"],
     cta: { label: "Explore the game", href: "/order-of-dharma" },
-    buy: { label: "Buy the game", href: links.shiprocket },
+    buy: { label: "Buy the game", href: links.prebook },
   },
 
   events: {

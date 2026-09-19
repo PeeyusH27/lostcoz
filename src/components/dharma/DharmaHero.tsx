@@ -50,7 +50,7 @@ export default function DharmaHero() {
           </p>
           <div data-h-cta data-cta-stack className="group/stack mt-8 flex flex-col items-stretch gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
             <Button href="#rules" size="lg">How to play</Button>
-            <Button href={links.shiprocket} variant="secondary" size="lg">Buy the game</Button>
+            <Button href={links.prebook} variant="secondary" size="lg">Buy the game</Button>
             <Button href={rulebookPdf} variant="ghost" size="lg" download>Rulebook PDF</Button>
           </div>
           <dl className="mt-12 grid grid-cols-2 gap-x-4 gap-y-7 min-[420px]:grid-cols-3 sm:mt-14 sm:grid-cols-5">
