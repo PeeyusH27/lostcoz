@@ -61,7 +61,7 @@ export const prebookCopy = {
   formLead: "One entry per phone number. If you have already pre-booked, we will spot it and tell you.",
   payTitle: "₹499 pre-booking payment",
   payLead:
-    "Pay first, then submit the form — the reference number ties the two together. Scan the code with any UPI app, or tap the button on your phone.",
+    "Pay first, then submit the form — the reference number ties the two together. Scan the code, or copy the UPI ID into GPay, PhonePe, Paytm or your bank app.",
   successTitle: "You're on the list.",
   successBody:
     "Your deck is held. We will message you on WhatsApp with the print-run date and, if you chose delivery, a tracking link.",
