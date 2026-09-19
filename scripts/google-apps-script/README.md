@@ -154,4 +154,6 @@ status tracking in the Sheet instead and treat Supabase as the raw log.
 | Every submission says "already pre-booked" | Expected for a repeat number. To clear a test, delete the row in the Table Editor. |
 | `Supabase returned 401` in Apps Script | `SUPABASE_SECRET_KEY` is the publishable key, not the secret one. |
 | Webhook fires, nothing in the Sheet | Secret mismatch — check `?secret=` matches `WEBHOOK_SECRET`. Apps Script → **Executions** shows `doPost` and its return value. |
+| Webhook log shows `302`, not `200` | Normal. Apps Script runs the script, *then* redirects to `script.googleusercontent.com` to serve the body; Supabase does not follow the redirect. The row still lands — judge it by the Sheet. |
+| `Failed to create webhook: schema "supabase_functions" does not exist` | The Database Webhooks integration is off. Dashboard → **Integrations → Database Webhooks → Enable**, then create the hook again. Or skip the UI and use the `pg_net` trigger block at the bottom of `supabase/schema.sql`. |
 | Sheet has the rows but no header styling | The header is only written when the sheet is empty. Delete the tab and sync again. |

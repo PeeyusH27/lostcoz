@@ -70,13 +70,15 @@ grant insert on public.prebookings to anon;
 -- the Apps Script time trigger pull every few minutes.
 -- ---------------------------------------------------------------------------
 --
--- create extension if not exists pg_net with schema extensions;
+-- pg_net is non-relocatable: it always installs into its own `net` schema, so
+-- do NOT add `with schema extensions` here.
+-- create extension if not exists pg_net;
 --
 -- create or replace function public.notify_sheet_of_prebooking()
 -- returns trigger
 -- language plpgsql
 -- security definer
--- set search_path = public, extensions
+-- set search_path = public, net
 -- as $$
 -- begin
 --   perform net.http_post(
