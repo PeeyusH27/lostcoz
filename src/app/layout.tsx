@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Unbounded, Manrope, Cinzel, EB_Garamond } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import SmoothScroll from "@/components/motion/SmoothScroll";
 import Cursor from "@/components/motion/Cursor";
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </SmoothScroll>
         <Cursor />
+        <Analytics />
       </body>
     </html>
   );
