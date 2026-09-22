@@ -1,28 +1,13 @@
-# Disabled pages
+# Disabled assets
 
-Source kept out of `src/app/` so Next.js does not build or serve it.
+Source kept out of `src/app/` and `public/` so Next.js does not build or ship it.
 
-## brand-page.tsx.disabled
-
-The internal **Brand & design tokens** reference page (colour ramps, type scale,
-motion demos). Disabled on request; its footer link was removed from
-`src/data/site.ts` at the same time.
-
-To restore:
-
-```sh
-mkdir -p src/app/brand
-mv _disabled/brand-page.tsx.disabled src/app/brand/page.tsx
-```
-
-then add this back to `site.footer.explore` in `src/data/site.ts`:
-
-```ts
-{ label: "Brand & tokens", href: "/brand" },
-```
-
-The components it uses (`src/components/brand/`) were left in place and are
-otherwise unused.
+> The **Brand & design tokens** page that used to live here is back at
+> `src/app/brand/page.tsx`. It builds and serves at `/brand`, but is intentionally
+> unlinked — no nav, footer or sitemap entry, and `robots: noindex` in its
+> metadata. Reach it by typing the URL. To surface it again, add
+> `{ label: "Brand & tokens", href: "/brand" }` to `site.footer.explore` in
+> `src/data/site.ts` and drop the `robots` key.
 
 ## original-photos/
 

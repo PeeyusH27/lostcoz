@@ -9,7 +9,19 @@ import MotionDemo from "@/components/brand/MotionDemo";
 import { flatten, group, sub, T } from "@/components/brand/tokens-util";
 import { cn } from "@/lib/cn";
 
-export const metadata: Metadata = { title: "Brand & design tokens", description: "The Lostcoz design system: logo, colour, type, spacing, motion — every token, live." };
+/**
+ * Internal brand + design-token reference.
+ *
+ * Deliberately unlinked: nothing in the nav, footer or sitemap points here, so
+ * it is reachable only by typing /brand. `robots: noindex` keeps it out of
+ * search results too — an unlinked page still gets found otherwise (a shared
+ * link, a referrer header, a crawler following the deploy preview).
+ */
+export const metadata: Metadata = {
+  title: "Brand & design tokens",
+  description: "The Lostcoz design system: logo, colour, type, spacing, motion — every token, live.",
+  robots: { index: false, follow: false },
+};
 
 const scales = ["ink", "cream", "purple", "orange", "magenta", "cyan"];
 const steps = ["50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "950"];
