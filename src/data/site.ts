@@ -34,7 +34,7 @@ export const site = {
     lead:
       "We make original card games and throw the nights to play them. Pull up a chair. No experience, no plus-one, no problem.",
     primary: { label: "Explore Order of Dharma", href: "/order-of-dharma" },
-    secondary: { label: "Next game night", href: links.whatsappCommunity },
+    secondary: { label: "Register for the meet", href: links.meet },
   },
 
   marquee: ["Card games", "Game nights", "Tournaments", "Private tables", "Come solo"],
@@ -85,6 +85,7 @@ export const site = {
     eyebrow: "Events",
     title: "Nights worth leaving the house for.",
     note: "Dates drop on Instagram first, so follow to get a seat before they fill.",
+    meet: { label: "Register for the meet", href: links.meet },
     cta: { label: "Join on WhatsApp", href: links.whatsappCommunity },
     contact: { label: "Email us", href: mailTo("Lostcoz events") }, // TODO: link to a calendar / booking page
     formats: [

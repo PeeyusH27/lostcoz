@@ -63,18 +63,90 @@ create policy "prebookings: anon can insert"
 grant insert on public.prebookings to anon;
 
 
+-- ===========================================================================
+-- LostCoz community meet registrations (/meet)
+-- ===========================================================================
+--
+-- Same security model as prebookings: anon may INSERT a row and upload a payment
+-- screenshot, and nothing else. One table serves every meet; `event` is the
+-- slug from src/data/meet.ts, and the dedup is one registration per number
+-- *per event*.
+
+create table if not exists public.meet_registrations (
+  id              uuid primary key default gen_random_uuid(),
+  created_at      timestamptz not null default now(),
+
+  event           text        not null check (char_length(event) between 3 and 80),
+
+  name            text        not null check (char_length(name) between 2 and 80),
+  -- canonical 10-digit Indian mobile; the app strips +91/spaces before insert
+  whatsapp        text        not null check (whatsapp ~ '^[6-9][0-9]{9}$'),
+  age_range       text        not null
+                              check (age_range in ('under-16','16-18','19-22','23-27','28-30','over-30')),
+  organisation    text        not null check (char_length(organisation) between 2 and 120),
+  heard_from      text        not null check (char_length(heard_from) between 2 and 200),
+  favourite_game  text        not null check (char_length(favourite_game) between 2 and 120),
+  party_size      integer     not null check (party_size between 1 and 10),
+
+  -- rupees due = party_size × per-person price at the time of registering
+  amount_due      integer     not null check (amount_due >= 0),
+  -- object path inside the `meet-payments` bucket; null if they skipped the upload
+  screenshot_path text        check (char_length(screenshot_path) <= 200),
+  source_ip       text,
+
+  -- set by hand once the payment is matched against the UPI statement
+  payment_status  text        not null default 'pending'
+                              check (payment_status in ('pending','paid','refunded'))
+);
+
+create unique index if not exists meet_registrations_event_whatsapp_key
+  on public.meet_registrations (event, whatsapp);
+
+create index if not exists meet_registrations_created_at_idx
+  on public.meet_registrations (created_at);
+
+alter table public.meet_registrations enable row level security;
+
+drop policy if exists "meet_registrations: anon can insert" on public.meet_registrations;
+create policy "meet_registrations: anon can insert"
+  on public.meet_registrations for insert
+  to anon
+  with check (true);
+
+grant insert on public.meet_registrations to anon;
+
+-- Payment screenshots. Private bucket: anon can upload, never list or download.
+-- View them in Dashboard → Storage → meet-payments, or with the secret key.
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values (
+  'meet-payments', 'meet-payments', false, 10485760,
+  array['image/jpeg','image/png','image/webp','image/heic','image/heif']
+)
+on conflict (id) do update
+  set public = excluded.public,
+      file_size_limit = excluded.file_size_limit,
+      allowed_mime_types = excluded.allowed_mime_types;
+
+drop policy if exists "meet-payments: anon can upload" on storage.objects;
+create policy "meet-payments: anon can upload"
+  on storage.objects for insert
+  to anon
+  with check (bucket_id = 'meet-payments');
+
+
 -- ---------------------------------------------------------------------------
--- Optional: push each new row to the Google Sheet the moment it lands.
+-- Optional: push every change to the Google Sheet the moment it happens.
 -- Needs the Apps Script web app URL + shared secret from
--- scripts/google-apps-script/README.md. Skip this block if you would rather let
--- the Apps Script time trigger pull every few minutes.
+-- scripts/google-apps-script/README.md. Skip this block if the 5-minute pull
+-- trigger is fast enough. Covers both tables, on insert, update and delete, so
+-- a payment_status change or a deleted test row reaches the Sheet too.
 -- ---------------------------------------------------------------------------
 --
 -- pg_net is non-relocatable: it always installs into its own `net` schema, so
 -- do NOT add `with schema extensions` here.
 -- create extension if not exists pg_net;
 --
--- create or replace function public.notify_sheet_of_prebooking()
+-- create or replace function public.notify_sheet()
 -- returns trigger
 -- language plpgsql
 -- security definer
@@ -84,13 +156,26 @@ grant insert on public.prebookings to anon;
 --   perform net.http_post(
 --     url     := 'https://script.google.com/macros/s/PASTE_DEPLOYMENT_ID/exec?secret=PASTE_SHARED_SECRET',
 --     headers := '{"Content-Type": "application/json"}'::jsonb,
---     body    := to_jsonb(new)
+--     body    := jsonb_build_object(
+--       'type',       tg_op,
+--       'table',      tg_table_name,
+--       'record',     case when tg_op = 'DELETE' then null else to_jsonb(new) end,
+--       'old_record', case when tg_op = 'INSERT' then null else to_jsonb(old) end
+--     )
 --   );
---   return new;
+--   return coalesce(new, old);
 -- end;
 -- $$;
 --
+-- -- replaces the older insert-only trigger, if you installed it
 -- drop trigger if exists prebookings_to_sheet on public.prebookings;
+-- drop function if exists public.notify_sheet_of_prebooking();
+--
 -- create trigger prebookings_to_sheet
---   after insert on public.prebookings
---   for each row execute function public.notify_sheet_of_prebooking();
+--   after insert or update or delete on public.prebookings
+--   for each row execute function public.notify_sheet();
+--
+-- drop trigger if exists meet_registrations_to_sheet on public.meet_registrations;
+-- create trigger meet_registrations_to_sheet
+--   after insert or update or delete on public.meet_registrations
+--   for each row execute function public.notify_sheet();

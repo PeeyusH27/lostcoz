@@ -63,7 +63,7 @@ export default function Hero() {
           <div className="flex flex-col gap-5">
             <div data-cta-stack className="group/stack flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
               <Button href={site.featured.buy.href} size="lg">{site.featured.buy.label}</Button>
-              <Button href={site.hero.secondary.href} variant="ghost" size="lg">{site.hero.secondary.label}</Button>
+              <Button href={site.hero.secondary.href} variant="inverse" size="lg">{site.hero.secondary.label}</Button>
             </div>
             {/* social links sit directly under the two CTAs */}
             <div className="flex flex-wrap items-center gap-x-6 gap-y-1">

@@ -19,14 +19,20 @@ import QRCode from "qrcode";
 // keep in sync with UPI_INTENT in src/data/prebook.ts
 const UPI_INTENT = "upi://pay?pa=8178311050%40ybl&pn=Bhavya%20Das&am=499&cu=INR";
 
-const out = resolve(dirname(fileURLToPath(import.meta.url)), "../public/qr/upi-prebook-499.svg");
+// keep in sync with MEET_UPI_INTENT in src/data/meet.ts — no `am=`: the total
+// depends on how many people are registering, so the payer types it in
+const MEET_UPI_INTENT = "upi://pay?pa=8178311050%40ybl&pn=Bhavya%20Das&cu=INR";
 
-const svg = await QRCode.toString(UPI_INTENT, {
-  type: "svg",
-  errorCorrectionLevel: "M",
-  margin: 1,
-  color: { dark: "#0A1512", light: "#EAD9B8" }, // dharma emerald on parchment
-});
+const qrDir = resolve(dirname(fileURLToPath(import.meta.url)), "../public/qr");
 
-await writeFile(out, svg, "utf8");
-console.log(`wrote ${out}`);
+const targets = [
+  { intent: UPI_INTENT, file: "upi-prebook-499.svg", color: { dark: "#0A1512", light: "#EAD9B8" } }, // dharma emerald on parchment
+  { intent: MEET_UPI_INTENT, file: "upi-meet.svg", color: { dark: "#0A0A0F", light: "#FAE7CF" } }, // ink on brand cream
+];
+
+for (const t of targets) {
+  const svg = await QRCode.toString(t.intent, { type: "svg", errorCorrectionLevel: "M", margin: 1, color: t.color });
+  const out = resolve(qrDir, t.file);
+  await writeFile(out, svg, "utf8");
+  console.log(`wrote ${out}`);
+}

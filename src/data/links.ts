@@ -35,6 +35,12 @@ export const links = {
    */
   prebook: "/prebook",
 
+  /** Registration page for the current community meet (details in src/data/meet.ts). */
+  meet: "/meet",
+
+  /** Venue of the current community meet, for the "Open in Maps" link on /meet. */
+  meetVenueMap: "https://www.google.com/maps/search/?api=1&query=Chai%20Leela%2C%20Sector%2017%2C%20Dwarka%2C%20New%20Delhi",
+
   /** Storefront for buying a deck. Not linked anywhere yet — see `prebook`. */
   shiprocket: "https://lostcoz.shiprocket.co", // TODO: real Shiprocket checkout URL
 

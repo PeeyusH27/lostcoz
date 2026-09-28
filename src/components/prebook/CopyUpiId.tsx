@@ -4,6 +4,21 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/cn";
 import { PREBOOK_AMOUNT, UPI_INTENT, UPI_PAYEE } from "@/data/prebook";
 
+type Props = {
+  vpa?: string;
+  /** `upi://pay` link for the secondary "open your app" route. */
+  intent?: string;
+  /** Rupees pre-filled by `intent`; null when the link carries no amount. */
+  amount?: number | null;
+  /** `dharma` for the Order of Dharma pages, `brand` for the main site. */
+  tone?: "dharma" | "brand";
+};
+
+const tones = {
+  dharma: { copied: "bg-dharma-emerald-300", link: "text-dharma-gold-400 hover:text-dharma-gold-300", glow: "hover:shadow-glow-gold" },
+  brand: { copied: "bg-state-success", link: "text-brand-orange hover:text-orange-300", glow: "hover:shadow-glow-orange" },
+} as const;
+
 /**
  * Copy-the-VPA is the primary payment action on a phone.
  *
@@ -12,20 +27,23 @@ import { PREBOOK_AMOUNT, UPI_INTENT, UPI_PAYEE } from "@/data/prebook";
  * reasons". Only a verified merchant (P2M) VPA may be paid that way. So the
  * button that reliably works is "copy the UPI ID, paste it in your app"; the
  * intent link stays as a quiet secondary for the apps that do accept it.
+ *
+ * Defaults are the Order of Dharma pre-booking payee.
  */
-export default function CopyUpiId() {
+export default function CopyUpiId({ vpa = UPI_PAYEE.vpa, intent = UPI_INTENT, amount = PREBOOK_AMOUNT, tone = "dharma" }: Props) {
   const [copied, setCopied] = useState(false);
   const [failed, setFailed] = useState(false);
+  const t = tones[tone];
 
   useEffect(() => {
     if (!copied) return;
-    const t = setTimeout(() => setCopied(false), 2400);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setCopied(false), 2400);
+    return () => clearTimeout(timer);
   }, [copied]);
 
   async function copy() {
     try {
-      await navigator.clipboard.writeText(UPI_PAYEE.vpa);
+      await navigator.clipboard.writeText(vpa);
       setFailed(false);
       setCopied(true);
     } catch {
@@ -45,8 +63,8 @@ export default function CopyUpiId() {
           "font-body text-sm font-bold uppercase tracking-[0.14em]",
           "transition-[background-color,box-shadow] duration-300 ease-out-expo active:scale-[0.97]",
           copied
-            ? "bg-dharma-emerald-300 text-fg-on-accent"
-            : "bg-accent text-fg-on-accent hover:bg-accent-hover hover:shadow-glow-gold",
+            ? cn(t.copied, "text-fg-on-accent")
+            : cn("bg-accent text-fg-on-accent hover:bg-accent-hover", t.glow),
           "sm:w-auto",
         )}
       >
@@ -59,10 +77,10 @@ export default function CopyUpiId() {
       </button>
 
       <p aria-live="polite" className="sr-only">
-        {copied ? `${UPI_PAYEE.vpa} copied to clipboard` : ""}
+        {copied ? `${vpa} copied to clipboard` : ""}
       </p>
 
-      <p className="mt-4 font-mono text-body-lg text-fg select-all">{UPI_PAYEE.vpa}</p>
+      <p className="mt-4 font-mono text-body-lg text-fg select-all">{vpa}</p>
       {failed && (
         <p className="mt-2 text-body-sm text-fg-subtle">
           Copying is blocked in this browser — press and hold the ID above to copy it.
@@ -71,8 +89,8 @@ export default function CopyUpiId() {
 
       <p className="mt-6 text-body-sm text-fg-subtle">
         Prefer to try your UPI app directly?{" "}
-        <a href={UPI_INTENT} className="text-dharma-gold-400 underline underline-offset-4 hover:text-dharma-gold-300">
-          Open it with ₹{PREBOOK_AMOUNT} pre-filled
+        <a href={intent} className={cn("underline underline-offset-4", t.link)}>
+          {amount ? `Open it with ₹${amount} pre-filled` : "Open your UPI app"}
         </a>
         . Some apps decline payment links to a personal UPI ID — if yours does, use the ID above.
       </p>

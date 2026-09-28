@@ -41,7 +41,8 @@ export default function Events() {
           <h2 className="font-display text-display-lg uppercase text-balance">{site.events.title}</h2>
           <p className="mt-6 max-w-prose text-body-lg text-fg-muted">{site.events.note}</p>
           <div data-cta-stack className="group/stack mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
-            <Button href={site.events.cta.href}>{site.events.cta.label}</Button>
+            <Button href={site.events.meet.href}>{site.events.meet.label}</Button>
+            <Button href={site.events.cta.href} variant="ghost">{site.events.cta.label}</Button>
             <Button href={site.events.contact.href} variant="ghost">{site.events.contact.label}</Button>
           </div>
           {/* the cue has to show on touch too: the rail scrolls sideways at every size */}

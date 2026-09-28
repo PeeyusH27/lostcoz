@@ -2,6 +2,7 @@
 
 import { headers } from "next/headers";
 import { insertRow, SupabaseError, UNIQUE_VIOLATION } from "@/lib/supabase";
+import { normalisePhone } from "@/lib/phone";
 import { enjoymentScale, fulfilments, genders } from "@/data/prebook";
 import type { PrebookState } from "@/app/prebook/state";
 
@@ -9,17 +10,6 @@ const genderValues = genders.map((g) => g.value) as string[];
 const fulfilmentValues = fulfilments.map((f) => f.value) as string[];
 
 const str = (data: FormData, name: string) => (data.get(name) ?? "").toString().trim();
-
-/**
- * Indian mobile numbers are ten digits starting 6–9. People type them with
- * +91, spaces, dashes and brackets, so strip everything down to digits first
- * and store one canonical form — the dedup depends on it.
- */
-function normalisePhone(raw: string): string | null {
-  const digits = raw.replace(/\D/g, "").replace(/^0+/, "");
-  const local = digits.length > 10 && digits.startsWith("91") ? digits.slice(-10) : digits;
-  return /^[6-9]\d{9}$/.test(local) ? local : null;
-}
 
 export async function submitPrebooking(
   _prev: PrebookState,
