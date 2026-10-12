@@ -39,7 +39,7 @@ export const links = {
   meet: "/meet",
 
   /** Venue of the current community meet, for the "Open in Maps" link on /meet. */
-  meetVenueMap: "https://www.google.com/maps/search/?api=1&query=Chai%20Leela%2C%20Sector%2017%2C%20Dwarka%2C%20New%20Delhi",
+  meetVenueMap: "https://maps.app.goo.gl/iAcW1w3UZmeEBEXC7",
 
   /** Storefront for buying a deck. Not linked anywhere yet — see `prebook`. */
   shiprocket: "https://lostcoz.shiprocket.co", // TODO: real Shiprocket checkout URL

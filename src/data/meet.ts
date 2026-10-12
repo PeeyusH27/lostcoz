@@ -3,17 +3,18 @@
  *
  * `MEET_EVENT.slug` is stored on every registration, so the same table serves
  * the next meet too: change the slug and the details below, and the one-entry-
- * per-number rule starts fresh for the new event. Option `value`s land in
+ * per-number rule starts fresh for the new event (and the Sheet mirror opens a
+ * new tab for it). Option `value`s land in
  * Supabase as-is — add rather than rename.
  */
 import { contact } from "@/data/links";
 
 export const MEET_EVENT = {
-  slug: "community-meet-2026-10-04",
+  slug: "community-meet-2026-10-18",
   title: "LostCoz Board Games Community Meet",
-  dateLabel: "Sun, 4 Oct 2026",
-  timeLabel: "1 PM to 4 PM",
-  venue: "Chai Leela",
+  dateLabel: "Sun, 18 Oct 2026",
+  timeLabel: "1 PM to 5 PM",
+  venue: "Mark’s Eatery",
   area: "Sector 17, Dwarka",
 } as const;
 
@@ -58,11 +59,11 @@ export const ageRanges = [
 export const heardFromSuggestions = ["Instagram", "WhatsApp", "A friend", "At a game night"] as const;
 
 export const meetCopy = {
-  eyebrow: "Community meet · first edition",
+  eyebrow: "Community meet · second edition",
   lead: "Come hang out with LostCoz and fellow members of our community for an afternoon of games, chaos and fun.",
   about: [
     "You’ll get to play a variety of board and fun games, including one unreleased game that you won’t find anywhere else.",
-    `For just ₹${MEET_PRICE}, be part of the very first LostCoz Game Meet and the beginning of an entertainment community.`,
+    `For just ₹${MEET_PRICE}, be part of the LostCoz Game Meet and a growing entertainment community.`,
   ],
   contactLine: `${contact.phoneDisplay} · ${contact.email}`,
   privacy:

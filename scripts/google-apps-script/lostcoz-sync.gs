@@ -1,9 +1,9 @@
 /**
  * Lostcoz — Supabase → Google Sheet mirror.
  *
- * Mirrors every form table into its own tab:
- *   prebookings         → "Pre-bookings"        (/prebook)
- *   meet_registrations  → "Meet registrations"  (/meet)
+ * Mirrors every form table into the Sheet:
+ *   prebookings         → "Pre-bookings"                         (/prebook)
+ *   meet_registrations  → one tab per meet, e.g. "Meet · 18 Oct 2026"  (/meet)
  *
  * Supabase is the source of truth and the place dedup happens (unique index on
  * `prebookings.phone` and on `meet_registrations (event, whatsapp)`), so a repeat
@@ -33,6 +33,12 @@
  * `header` is what a human reads. Append new columns just before 'Supabase ID'
  * and never reorder existing ones, or rows already in the Sheet stop lining up.
  * The id column must stay last.
+ *
+ * `splitBy` gives each value of that column its own tab — one tab per meet.
+ * A value listed in `tabs` uses that name; any other is named from the date at
+ * the end of the slug: community-meet-2026-10-18 → `tabPrefix` + "18 Oct 2026".
+ * Renaming a tab by hand makes the next sync create a fresh one, so rename it
+ * here too (or add it to `tabs`).
  *
  * `type`:
  *   date      ISO timestamp → a real Sheets date
@@ -64,8 +70,11 @@ var TABLES = [
   },
   {
     table: 'meet_registrations',
-    sheet: 'Meet registrations',
+    sheet: 'Meet registrations', // rows with no event
     noun: 'meet registration',
+    splitBy: 'event',
+    tabPrefix: 'Meet · ',
+    tabs: { 'community-meet-2026-10-04': 'Meet registrations' }, // first meet keeps its original tab
     header: { bg: '#070709', fg: '#FAE7CF' },
     columns: [
       { key: 'created_at',      header: 'Registered at', type: 'date' },
@@ -110,6 +119,33 @@ function config_() {
 function tableConfig_(name) {
   for (var i = 0; i < TABLES.length; i++) if (TABLES[i].table === name) return TABLES[i];
   return null;
+}
+
+var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+/** Name of the tab `record` belongs in. See `splitBy` above. */
+function tabName_(t, record) {
+  var key = t.splitBy && record && record[t.splitBy] ? String(record[t.splitBy]) : '';
+  if (!key) return t.sheet;
+  if (t.tabs && t.tabs[key]) return t.tabs[key];
+  var m = key.match(/(\d{4})-(\d{2})-(\d{2})$/);
+  return (t.tabPrefix || '') + (m ? Number(m[3]) + ' ' + MONTHS[Number(m[2]) - 1] + ' ' + m[1] : key);
+}
+
+/**
+ * `records` grouped by tab name. Tabs that always exist (the table's own, or
+ * the ones named in `tabs`) are included even when empty, so a full sync can
+ * clear rows deleted from Supabase.
+ */
+function byTab_(t, records) {
+  var groups = {};
+  if (!t.splitBy) groups[t.sheet] = [];
+  for (var k in t.tabs || {}) groups[t.tabs[k]] = [];
+  records.forEach(function (r) {
+    var name = tabName_(t, r);
+    (groups[name] = groups[name] || []).push(r);
+  });
+  return groups;
 }
 
 /* --------------------------------------------------------------- supabase */
@@ -166,9 +202,9 @@ function signPaths_(cfg, bucket, paths) {
 
 /* ------------------------------------------------------------------- sheet */
 
-function sheet_(t) {
+function sheet_(t, name) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sh = ss.getSheetByName(t.sheet) || ss.insertSheet(t.sheet);
+  var sh = ss.getSheetByName(name) || ss.insertSheet(name);
 
   if (sh.getLastRow() === 0) {
     var headers = t.columns.map(function (c) { return c.header; });
@@ -236,18 +272,18 @@ function sameRow_(a, b) {
 }
 
 /**
- * Brings the tab in line with `records`.
- *   mode 'full'    records is the whole table: add, update, and remove rows Supabase no longer has
+ * Brings tab `name` in line with `records`.
+ *   mode 'full'    records is everything that belongs in this tab: add, update, and remove rows Supabase no longer has
  *   mode 'upsert'  add or update just these records
  *   mode 'delete'  remove just these records
  * Rows with no Supabase id (typed in by hand) are never touched.
  */
-function mirror_(t, records, mode) {
+function mirror_(t, name, records, mode) {
   var cfg = config_();
   var lock = LockService.getScriptLock();
   lock.waitLock(30000);
   try {
-    var sh = sheet_(t);
+    var sh = sheet_(t, name);
     var width = t.columns.length;
     var idCol = width - 1;
     var last = sh.getLastRow();
@@ -376,8 +412,10 @@ function doPost(e) {
     var t = tableConfig_(name);
     if (!t) return json_({ ok: false, error: 'unknown table ' + name });
 
-    var stats = mirror_(t, [record], type === 'DELETE' ? 'delete' : 'upsert');
-    return json_({ ok: true, table: name, stats: stats });
+    // An upsert that moves a row to another event leaves the old copy until the next full sync.
+    var tab = tabName_(t, record);
+    var stats = mirror_(t, tab, [record], type === 'DELETE' ? 'delete' : 'upsert');
+    return json_({ ok: true, table: name, sheet: tab, stats: stats });
   } catch (err) {
     console.error(err);
     return json_({ ok: false, error: String(err) });
@@ -402,14 +440,17 @@ function syncFromSupabase() {
   TABLES.forEach(function (t) {
     var records = fetchAll_(cfg, t.table);
     if (records === null) {
-      report.push({ table: t, missing: true });
+      report.push({ sheet: t.sheet, missing: true });
       console.warn(t.table + ' does not exist yet — run supabase/schema.sql. Skipped.');
       return;
     }
-    var stats = mirror_(t, records, 'full');
-    report.push({ table: t, stats: stats, total: records.length });
-    console.log(t.table + ': ' + records.length + ' in Supabase · +' + stats.added +
-      ' ~' + stats.updated + ' -' + stats.removed);
+    var groups = byTab_(t, records);
+    for (var name in groups) {
+      var stats = mirror_(t, name, groups[name], 'full');
+      report.push({ sheet: name, stats: stats, total: groups[name].length });
+      console.log(t.table + ' → ' + name + ': ' + groups[name].length + ' in Supabase · +' + stats.added +
+        ' ~' + stats.updated + ' -' + stats.removed);
+    }
   });
   return report;
 }
@@ -428,10 +469,10 @@ function onOpen() {
 function syncNowWithToast() {
   try {
     var lines = syncFromSupabase().map(function (r) {
-      if (r.missing) return r.table.sheet + ': table not created yet';
+      if (r.missing) return r.sheet + ': table not created yet';
       var s = r.stats;
-      if (!s.added && !s.updated && !s.removed) return r.table.sheet + ': up to date';
-      return r.table.sheet + ': ' + [
+      if (!s.added && !s.updated && !s.removed) return r.sheet + ': up to date';
+      return r.sheet + ': ' + [
         s.added && s.added + ' added',
         s.updated && s.updated + ' updated',
         s.removed && s.removed + ' removed',

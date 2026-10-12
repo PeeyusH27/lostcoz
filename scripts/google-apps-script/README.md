@@ -4,7 +4,7 @@ How the pieces fit:
 
 ```
 /prebook form ─▶ Server Action ─▶ Supabase `prebookings`          ─▶ "Pre-bookings" tab
-/meet form    ─▶ Server Action ─▶ Supabase `meet_registrations`   ─▶ "Meet registrations" tab
+/meet form    ─▶ Server Action ─▶ Supabase `meet_registrations`   ─▶ one tab per meet
                                   unique index = the dedup            (mirror, keyed by id)
 ```
 
@@ -104,6 +104,19 @@ becomes a WhatsApp link. That is a one-off.
 In the Meet tab, **WhatsApp** opens a chat with that person, and **Payment
 screenshot** is a *View* link to the uploaded image. Those links are signed for
 a year and work for anyone who has the Sheet, so share it only with the team.
+
+### One tab per meet
+
+Each meet gets its own tab, picked by the `event` slug on the row
+(`MEET_EVENT.slug` in `src/data/meet.ts`). The first meet
+(`community-meet-2026-10-04`) stays in **Meet registrations**. Every later meet
+gets a tab named from the date in its slug, e.g. `community-meet-2026-10-18`
+becomes **Meet · 18 Oct 2026**. The tab appears with the first registration. To
+start a new meet, change the slug on the site; the script needs no edit.
+
+To rename a tab, add its slug to `tabs` in the meet entry of `TABLES`. If you
+only rename it in the Sheet, the next sync creates a fresh tab under the old
+name.
 
 **Five minutes is enough for most events. If you want rows to land instantly,
 do step 6 as well.** The two run happily side by side.
