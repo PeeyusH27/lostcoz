@@ -74,7 +74,10 @@ var TABLES = [
     noun: 'meet registration',
     splitBy: 'event',
     tabPrefix: 'Meet · ',
-    tabs: { 'community-meet-2026-10-04': 'Meet registrations' }, // first meet keeps its original tab
+    tabs: {
+      'community-meet-2026-10-04': 'Meet registrations', // first meet keeps its original tab
+      'christmas-chaos-2026': 'Christmas Chaos',
+    },
     header: { bg: '#070709', fg: '#FAE7CF' },
     columns: [
       { key: 'created_at',      header: 'Registered at', type: 'date' },

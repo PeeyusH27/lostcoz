@@ -4,9 +4,9 @@ import { MEET_PRICE, MEET_UPI_INTENT, MEET_UPI_PAYEE, MEET_UPI_QR_SVG, meetCopy 
 
 /**
  * Payment step for the meet. Same flow as the pre-booking panel, but the QR
- * carries no amount: the payer enters ₹99 × the number of people themselves.
+ * carries no amount: the payer enters the per-person price × the number of people themselves.
  */
-export default function MeetPaymentPanel() {
+export default function MeetPaymentPanel({ price = MEET_PRICE, title = meetCopy.payTitle }: { price?: number; title?: string }) {
   return (
     <div className="glass-raised glass-sheen overflow-hidden rounded-2xl">
       <div aria-hidden="true" className="absolute -right-24 -top-24 size-72 rounded-full bg-brand-orange/25 blur-3xl" />
@@ -29,13 +29,13 @@ export default function MeetPaymentPanel() {
 
         <div className="min-w-0">
           <p className="eyebrow text-brand-orange">Step one · pay</p>
-          <h2 className="mt-4 font-display text-display-sm uppercase">{meetCopy.payTitle}</h2>
+          <h2 className="mt-4 font-display text-display-sm uppercase">{title}</h2>
           <p className="mt-4 max-w-prose text-body-lg text-fg-muted text-pretty">{meetCopy.payLead}</p>
 
           <ol className="mt-8 space-y-3 text-body-lg text-fg-muted">
             {[
               "Scan the code, or copy the UPI ID below.",
-              `Send ₹${MEET_PRICE} for each person you’re registering.`,
+              `Send ₹${price.toLocaleString("en-IN")} for each person you’re registering.`,
               "Screenshot the confirmation, then register below.",
             ].map((step, i) => (
               <li key={step} className="flex gap-4">

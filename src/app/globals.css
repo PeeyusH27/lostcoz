@@ -220,7 +220,7 @@
 }
 
 /* ---------- custom cursor ---------- */
-.cursor { position: fixed; inset: 0; pointer-events: none; z-index: var(--z-cursor); }
+.cursor { position: fixed; inset: 0; pointer-events: none; z-index: 400; /* above the Christmas promo dialog (z-200) */ }
 .cursor-dot, .cursor-ring { position: absolute; top: 0; left: 0; border-radius: 999px; will-change: transform; }
 .cursor-dot { width: 8px; height: 8px; margin: -4px 0 0 -4px; background: var(--color-brand-cream); mix-blend-mode: difference; }
 .cursor-ring {
@@ -267,3 +267,100 @@
 .animate-spin-slow { animation: spin-slow 24s linear infinite; }
 .animate-float { animation: float 5s ease-in-out infinite; }
 .animate-pulse-glow { animation: pulse-glow 3.2s ease-in-out infinite; }
+
+/* ---------- Christmas Chaos promo + page ---------- */
+.xmas-promo {
+  background:
+    radial-gradient(60% 50% at 50% 0%, rgb(246 201 107 / 0.22), transparent 70%),
+    radial-gradient(80% 60% at 50% 110%, rgb(11 42 32 / 0.9), transparent 70%),
+    linear-gradient(160deg, #8e2536 0%, #6a1626 55%, #3d0c16 100%);
+  animation: xmas-fade 0.6s ease-out both;
+}
+.xmas-in { animation: xmas-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.xmas-snow span {
+  position: absolute; top: -5%; border-radius: 50%;
+  background: #fff; opacity: 0.8;
+  animation-name: xmas-fall; animation-timing-function: linear; animation-iteration-count: infinite;
+}
+@keyframes xmas-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes xmas-rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes xmas-fall {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(var(--drift, 20px), 110vh, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .xmas-snow { display: none; }
+  .xmas-twinkle, .xmas-float, .xmas-star-glow { animation: none; }
+  .xmas-in, .xmas-promo { animation: none; }
+}
+.xmas-snow span.xmas-confetti { top: -6%; opacity: 0.9; animation-name: xmas-confetti; }
+@keyframes xmas-confetti {
+  from { transform: translate3d(0, 0, 0) rotate(0deg); }
+  to { transform: translate3d(var(--drift, 20px), 112vh, 0) rotate(var(--rot, 360deg)); }
+}
+.xmas-twinkle { animation: xmas-twinkle 2.4s ease-in-out infinite; }
+.xmas-star-glow { animation: xmas-star 2.2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes xmas-star { 0%, 100% { transform: scale(1); filter: drop-shadow(0 0 4px #ffd978); } 50% { transform: scale(1.1); filter: drop-shadow(0 0 14px #ffd978); } }
+@keyframes xmas-twinkle { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+.xmas-float { animation: xmas-float 6s ease-in-out infinite; }
+@keyframes xmas-float { 0%, 100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-10px) rotate(1deg); } }
+.xmas-gold-text {
+  background: linear-gradient(100deg, #ffe7a8 0%, #f6c96b 40%, #f99a0e 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.xmas-glass {
+  background: rgb(255 246 230 / 0.08);
+  border: 1px solid rgb(255 246 230 / 0.22);
+  backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.18), 0 20px 50px -24px rgb(0 0 0 / 0.7);
+}
+.xmas-pill { animation: xmas-rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* ---------- Christmas promo: ticket card ---------- */
+.xmas-backdrop {
+  background:
+    radial-gradient(60% 50% at 50% 0%, rgb(142 37 54 / 0.55), transparent 70%),
+    rgb(14 4 8 / 0.78);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  animation: xmas-fade 0.4s ease-out both;
+}
+.xmas-card-in { animation: xmas-pop 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+@keyframes xmas-pop { from { opacity: 0; transform: translateY(28px) scale(0.96); } to { opacity: 1; transform: none; } }
+.xmas-ticket { filter: drop-shadow(0 30px 60px rgb(0 0 0 / 0.55)); }
+/* zigzag teeth along the top and bottom edges */
+.xmas-zig {
+  --s: 22px;
+  -webkit-mask:
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / var(--s) 51% repeat-x,
+    conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / var(--s) 51% repeat-x;
+  mask:
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / var(--s) 51% repeat-x,
+    conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / var(--s) 51% repeat-x;
+}
+/* ticket punch-outs on the left and right edges */
+.xmas-punch {
+  -webkit-mask: radial-gradient(circle 15px at 0 50%, #0000 96%, #000), radial-gradient(circle 15px at 100% 50%, #0000 96%, #000);
+  -webkit-mask-composite: source-in;
+  mask: radial-gradient(circle 15px at 0 50%, #0000 96%, #000), radial-gradient(circle 15px at 100% 50%, #0000 96%, #000);
+  mask-composite: intersect;
+}
+.xmas-stub {
+  background:
+    radial-gradient(70% 55% at 50% 55%, rgb(246 201 107 / 0.28), transparent 70%),
+    linear-gradient(170deg, #12503a 0%, #0b2a20 100%);
+}
+.xmas-paper {
+  background:
+    radial-gradient(90% 60% at 100% 0%, rgb(246 201 107 / 0.22), transparent 60%),
+    #fff6e6;
+  /* perforation between stub and content */
+  background-clip: padding-box;
+}
+@media (min-width: 1024px) {
+  .xmas-paper { border-left: 2px dashed rgb(179 32 58 / 0.4); }
+}
+.xmas-red-text {
+  background: linear-gradient(100deg, #b3203a 0%, #d6283e 55%, #f2681c 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+@media (prefers-reduced-motion: reduce) { .xmas-card-in, .xmas-backdrop { animation: none; } }

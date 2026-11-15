@@ -5,8 +5,9 @@ import { headers } from "next/headers";
 import { insertRow, uploadObject, SupabaseError, UNIQUE_VIOLATION } from "@/lib/supabase";
 import { normalisePhone } from "@/lib/phone";
 import {
-  MEET_EVENT, MEET_MAX_PEOPLE, MEET_PRICE, SCREENSHOT_TYPES, SCREENSHOT_UPLOAD_MAX_MB, ageRanges,
+  MEET_EVENT, MEET_MAX_PEOPLE, SCREENSHOT_TYPES, SCREENSHOT_UPLOAD_MAX_MB, ageRanges,
 } from "@/data/meet";
+import { REGISTRATION_EVENTS } from "@/data/events";
 import type { MeetState } from "@/app/meet/state";
 
 const ageValues = ageRanges.map((a) => a.value) as string[];
@@ -30,6 +31,10 @@ export async function submitMeetRegistration(_prev: MeetState, data: FormData): 
   if (str(data, "website")) return { status: "success" };
 
   const errors: Record<string, string> = {};
+
+  // Which event this is for; defaults to the community meet for older pages.
+  const event = REGISTRATION_EVENTS[str(data, "event") || MEET_EVENT.slug];
+  if (!event) return { status: "error", message: "This event isn’t taking registrations. Please message us on WhatsApp." };
 
   const name = text(data, "name", 80, errors, "Please tell us your name.");
 
@@ -71,12 +76,12 @@ export async function submitMeetRegistration(_prev: MeetState, data: FormData): 
     // an orphaned screenshot behind, which is harmless and rare.
     let screenshotPath: string | null = null;
     if (screenshot) {
-      screenshotPath = `${MEET_EVENT.slug}/${randomUUID()}.${extensions[screenshot.type]}`;
+      screenshotPath = `${event.slug}/${randomUUID()}.${extensions[screenshot.type]}`;
       await uploadObject("meet-payments", screenshotPath, screenshot);
     }
 
     await insertRow("meet_registrations", {
-      event: MEET_EVENT.slug,
+      event: event.slug,
       name,
       whatsapp,
       age_range: ageRange,
@@ -84,7 +89,7 @@ export async function submitMeetRegistration(_prev: MeetState, data: FormData): 
       heard_from: heardFrom,
       favourite_game: favouriteGame,
       party_size: partySize,
-      amount_due: partySize * MEET_PRICE,
+      amount_due: partySize * event.price,
       screenshot_path: screenshotPath,
       source_ip: forwardedFor?.split(",")[0]?.trim() || null,
     });

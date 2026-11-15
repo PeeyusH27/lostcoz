@@ -4,7 +4,7 @@ import { useActionState, useId, useState } from "react";
 import { cn } from "@/lib/cn";
 import { links } from "@/data/links";
 import {
-  MEET_MAX_PEOPLE, MEET_PRICE, SCREENSHOT_PICK_MAX_MB, SCREENSHOT_TYPES, SCREENSHOT_UPLOAD_MAX_MB,
+  MEET_EVENT, MEET_MAX_PEOPLE, MEET_PRICE, SCREENSHOT_PICK_MAX_MB, SCREENSHOT_TYPES, SCREENSHOT_UPLOAD_MAX_MB,
   ageRanges, heardFromSuggestions, meetCopy,
 } from "@/data/meet";
 import { submitMeetRegistration } from "@/app/meet/actions";
@@ -100,7 +100,7 @@ function SubmitButton({ pending, total }: { pending: boolean; total: number }) {
         "disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:shadow-none sm:w-auto",
       )}
     >
-      <span>{pending ? "Registering…" : `Register · ₹${total}`}</span>
+      <span>{pending ? "Registering…" : `Register · ₹${total.toLocaleString("en-IN")}`}</span>
       <span aria-hidden="true" className="inline-block transition-transform duration-500 ease-out-expo group-hover/btn:translate-x-1">
         →
       </span>
@@ -138,7 +138,7 @@ async function shrink(file: File): Promise<File> {
   }
 }
 
-export default function MeetForm() {
+export default function MeetForm({ event = MEET_EVENT.slug, price = MEET_PRICE }: { event?: string; price?: number }) {
   const [state, formAction, pending] = useActionState(submitMeetRegistration, initialMeetState);
   const id = useId();
 
@@ -151,7 +151,7 @@ export default function MeetForm() {
 
   const [people, setPeople] = useState(1);
   const clampPeople = (n: number) => Math.min(MEET_MAX_PEOPLE, Math.max(1, Math.round(n) || 1));
-  const total = people * MEET_PRICE;
+  const total = people * price;
 
   // The screenshot lives in state, not in the file input, for the same reason as
   // `values`: the input would be emptied after a failed submit. It is appended
@@ -222,6 +222,7 @@ export default function MeetForm() {
 
   return (
     <form action={submit} noValidate className="glass-panel glass-sheen rounded-2xl p-6 sm:p-10">
+      <input type="hidden" name="event" value={event} />
       {/* Honeypot — hidden from people, irresistible to bots. */}
       <div aria-hidden="true" className="absolute left-[-9999px] top-0 h-0 w-0 overflow-hidden">
         <label htmlFor={`${id}-website`}>Website</label>
@@ -381,8 +382,8 @@ export default function MeetForm() {
               </button>
             </div>
             <p className="text-body-lg text-fg-muted" aria-live="polite">
-              ₹{MEET_PRICE} × {people} ={" "}
-              <span className="font-display text-title text-brand-orange">₹{total}</span>
+              ₹{price.toLocaleString("en-IN")} × {people} ={" "}
+              <span className="font-display text-title text-brand-orange">₹{total.toLocaleString("en-IN")}</span>
             </p>
           </div>
         </Field>
@@ -390,7 +391,7 @@ export default function MeetForm() {
         <Group
           label="Payment screenshot" optional
           error={err("screenshot") || undefined} errorId={describedBy("screenshot")}
-          hint={`JPG, PNG or HEIC, up to ${SCREENSHOT_PICK_MAX_MB} MB. It helps us match your ₹${total} to this registration.`}
+          hint={`JPG, PNG or HEIC, up to ${SCREENSHOT_PICK_MAX_MB} MB. It helps us match your ₹${total.toLocaleString("en-IN")} to this registration.`}
           className="sm:col-span-2"
         >
           {shot ? (

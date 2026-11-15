@@ -114,6 +114,12 @@ gets a tab named from the date in its slug, e.g. `community-meet-2026-10-18`
 becomes **Meet · 18 Oct 2026**. The tab appears with the first registration. To
 start a new meet, change the slug on the site; the script needs no edit.
 
+The Christmas Chaos event (`christmas-chaos-2026`, ₹2,500 per person) is pinned to a
+**Christmas Chaos** tab in `tabs`. After pasting the updated script, run
+**Lostcoz → Sync now** (and re-deploy the web app if you use the instant push, step 6c).
+Its form is `/christmas-chaos#register`; it writes to the same `meet_registrations`
+table, with the event slug and the ₹2,500 × people amount on each row.
+
 To rename a tab, add its slug to `tabs` in the meet entry of `TABLES`. If you
 only rename it in the Sheet, the next sync creates a fresh tab under the old
 name.

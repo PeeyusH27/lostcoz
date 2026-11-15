@@ -21,6 +21,7 @@ export const site = {
   ],
   nav: [
     { label: "Order of Dharma", href: "/order-of-dharma" },
+    { label: "Christmas Chaos", href: "/christmas-chaos" },
     { label: "Events", href: "/#events" },
     { label: "Community", href: "/#community" },
     { label: "About", href: "/#about" },
@@ -160,7 +161,8 @@ export const site = {
   footer: {
     explore: [
       { label: "Order of Dharma", href: "/order-of-dharma" },
-      { label: "Events", href: "/#events" },
+      { label: "Christmas Chaos", href: "/christmas-chaos" },
+    { label: "Events", href: "/#events" },
       { label: "Community", href: "/#community" },
     ],
     line: "Play responsibly. Bluff generously.",

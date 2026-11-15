@@ -6,6 +6,7 @@ import SmoothScroll from "@/components/motion/SmoothScroll";
 import Cursor from "@/components/motion/Cursor";
 import Nav from "@/components/ui/Nav";
 import Footer from "@/components/ui/Footer";
+import ChristmasPromo from "@/components/christmas/ChristmasPromo";
 import { site } from "@/data/site";
 
 const unbounded = Unbounded({ subsets: ["latin"], variable: "--font-unbounded", display: "swap" });
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Footer />
           </div>
         </SmoothScroll>
+        <ChristmasPromo />
         <Cursor />
         <Analytics />
       </body>
