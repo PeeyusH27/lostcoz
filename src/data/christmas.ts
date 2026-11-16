@@ -1,7 +1,7 @@
 /**
  * Christmas Chaos — event copy shared by the promo popup and /christmas-chaos.
- * Date and venue are not final yet: fill `dateLabel` / `venue` and they appear
- * automatically in the popup and on the page.
+ * Date, city and the six activities come from the promo video. Only the city is
+ * set for the venue so far; add the exact place to `venue` when it is confirmed.
  */
 export const CHRISTMAS = {
   /** Stored on every registration; the Sheet script maps it to the "Christmas Chaos" tab. */
@@ -11,23 +11,21 @@ export const CHRISTMAS = {
   tagline: "A hosted house party of games, music, food and unexpected moments.",
   /** Per-person entry, in rupees. */
   price: 2500,
-  windowLabel: "7:30 PM – 1:00 AM",
-  dateLabel: null as string | null, // TODO: e.g. "Sat, 20 Dec 2025"
-  venue: null as string | null, // TODO: venue + area
+  windowLabel: "7:30 PM onwards",
+  dateLabel: "25 Dec" as string | null,
+  venue: "Gurgaon" as string | null, // TODO: add the exact venue once confirmed
+  seats: 30,
 } as const;
 
-export const idea = {
-  lead: "Christmas Chaos is a festive, hosted house party built around games, friendly competition, music, food and unexpected moments. Guests can move between tabletop games and social spaces, while a few anchor activities bring everyone together at key points in the evening.",
-  note: "The experience should feel curated, not over-scheduled. Hosts guide the room, but guests should always have room to mingle, play casually or take a break.",
-};
-
-export const pillars = [
-  { name: "The Welcome", text: "Arrival, festive welcome, name tags and secret missions." },
-  { name: "The Gameshow", text: "Quick-fire challenges, team games and Pictionary." },
-  { name: "The Suspicion", text: "Christmas Mafia and hidden missions." },
-  { name: "The Feast", text: "Food, BYOB, conversations and open play." },
-  { name: "After Hours", text: "Karaoke, jamming, awards and music." },
-];
+/** The six things happening on the night. Taglines are from the promo video. */
+export const activities = [
+  { key: "deduction", image: "/photos/lostcoz-team.jpg", name: "Social", accent: "Deduction", tagline: "Lie. Bluff. Trust no one.", text: "Christmas Mafia with one dedicated moderator: secret roles, night and day rounds, and a Christmas story to build the suspense." },
+  { key: "tabletop", image: "/photos/lostcoz-gamenight.jpg", name: "Tabletop", accent: "Games", tagline: "Every move is being watched.", text: "Board and card games stay open all night. Jump in casually, find a table, or take a break." },
+  { key: "food", image: "/photos/community-phones.jpg", name: "Food", accent: "", tagline: "The only thing you can trust.", text: "An open food spread with BYOB and mixers. Eat, mingle and keep the games running." },
+  { key: "challenges", image: "/photos/community-learn.jpg", name: "Mini", accent: "Challenges", tagline: "The clock is already ticking.", text: "Quick-fire rounds: 5 Seconds, Guess the Character, Guess the Object, Don’t Laugh and Finish the Lyrics." },
+  { key: "group", image: "/photos/pillar-events-team.jpg", name: "Group", accent: "Activity", tagline: "Everyone’s in. No one’s safe.", text: "Team Pictionary with festive prompts, plus Operation Santa: secret missions you complete and reveal." },
+  { key: "jam", image: "/photos/christmas-santa.jpg", name: "Jamming", accent: "Session", tagline: "Survive the night. Then sing.", text: "Karaoke, song roulette, duets and open mic, then the LostCoz Awards to close the night." },
+] as const;
 
 export const dressCode =
   "Christmas colours, ugly Christmas sweaters, Santa hats, reindeer accessories or any festive outfit. Keep it easy and fun rather than making it a strict costume requirement.";
@@ -37,21 +35,6 @@ export const touches = [
   { name: "Operation Santa", text: "a hidden mission running quietly throughout the evening." },
   { name: "LostCoz Awards", text: "funny titles at the end, not just awards for winning games." },
   { name: "Memory Wall", text: "guests leave one funny observation, confession or favourite moment." },
-];
-
-export const itineraryIntro =
-  "Main event window: 7:30 PM–1:00 AM. Tabletop games stay open throughout, except where the space is needed for a full-group activity.";
-
-export const itinerary = [
-  { time: "7:30–8:00 PM", title: "Doors open & welcome", note: "Welcome guests, hand out name tags and Christmas Passes, explain BYOB setup, distribute secret missions. Background Christmas playlist; tabletop games open." },
-  { time: "8:00–8:40 PM", title: "Mini Challenge Hour", note: "Run 4–5 short challenges: 5 Seconds, Guess the Character, Guess the Object, Don’t Laugh and Finish the Lyrics. Keep rounds quick and award points." },
-  { time: "8:40–9:15 PM", title: "Full-group Pictionary", note: "Split into 2–4 teams. Play timed rounds followed by one final round. Use festive and pop-culture prompts." },
-  { time: "9:15–9:50 PM", title: "Food & social break", note: "Open food spread. BYOB and mixers available. Keep tabletop games running and let guests mingle." },
-  { time: "9:50–10:35 PM", title: "Christmas Mafia", note: "One dedicated moderator. Explain roles, run the night/day rounds and build suspense with a Christmas story." },
-  { time: "10:35–11:10 PM", title: "Operation Santa reveal", note: "Guests complete or attempt their secret missions. Reveal missions, let people guess who had which mission and award the best agent." },
-  { time: "11:10 PM–12:00 AM", title: "Karaoke & jamming", note: "Bollywood vs Hollywood, random song roulette, duets and open mic. Keep it welcoming, not a serious singing contest." },
-  { time: "12:00–12:40 AM", title: "Christmas After Hours", note: "Music, dancing, casual games, gift exchange if included, photos and relaxed social time." },
-  { time: "12:40–1:00 AM", title: "Grand finale", note: "LostCoz awards, final prize distribution, group photo and closing announcement." },
 ];
 
 export const registerCopy = {

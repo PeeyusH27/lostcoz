@@ -52,6 +52,23 @@ export async function uploadObject(bucket: string, path: string, file: Blob): Pr
   if (!res.ok) throw await toError(res);
 }
 
+/**
+ * Calls a Postgres function. `revalidate` (seconds) lets Next cache the answer;
+ * omit it for a fresh read. Used for the seat counter: the function returns one
+ * number, so the anon key learns nothing about who registered.
+ */
+export async function callRpc<T>(name: string, args: Record<string, unknown>, revalidate?: number): Promise<T> {
+  if (!url || !key) throw new SupabaseError("Supabase is not configured (SUPABASE_URL / SUPABASE_PUBLISHABLE_KEY)", 500);
+  const res = await fetch(`${url}/rest/v1/rpc/${name}`, {
+    method: "POST",
+    headers: { apikey: key, Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+    body: JSON.stringify(args),
+    ...(revalidate === undefined ? { cache: "no-store" as const } : { next: { revalidate } }),
+  });
+  if (!res.ok) throw await toError(res);
+  return (await res.json()) as T;
+}
+
 async function request(path: string, init: { method: string; headers: Record<string, string>; body: BodyInit }) {
   if (!url || !key) {
     throw new SupabaseError("Supabase is not configured (SUPABASE_URL / SUPABASE_PUBLISHABLE_KEY)", 500);

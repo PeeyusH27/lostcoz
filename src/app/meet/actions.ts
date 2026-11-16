@@ -7,7 +7,9 @@ import { normalisePhone } from "@/lib/phone";
 import {
   MEET_EVENT, MEET_MAX_PEOPLE, SCREENSHOT_TYPES, SCREENSHOT_UPLOAD_MAX_MB, ageRanges,
 } from "@/data/meet";
+import { revalidatePath } from "next/cache";
 import { REGISTRATION_EVENTS } from "@/data/events";
+import { getSeats } from "@/lib/seats";
 import type { MeetState } from "@/app/meet/state";
 
 const ageValues = ageRanges.map((a) => a.value) as string[];
@@ -68,6 +70,17 @@ export async function submitMeetRegistration(_prev: MeetState, data: FormData): 
     return { status: "error", errors, message: "Please fix the highlighted fields." };
   }
 
+  // Capped events: refuse once the seats are gone. A fresh count, not the cached one.
+  // If the count can't be read we let the registration through rather than block people.
+  if (event.seats) {
+    const seats = await getSeats(event.slug, 0);
+    if (seats && seats.left < partySize) {
+      return seats.left === 0
+        ? { status: "error", message: "Sorry, this event is sold out. Message us on WhatsApp to join the waitlist." }
+        : { status: "error", errors: { party_size: `Only ${seats.left} seat${seats.left === 1 ? "" : "s"} left.` }, message: `Only ${seats.left} seat${seats.left === 1 ? "" : "s"} left. Please reduce the number of people.` };
+    }
+  }
+
   // Kept for our own abuse handling only; never shown back to anyone.
   const forwardedFor = (await headers()).get("x-forwarded-for");
 
@@ -107,5 +120,6 @@ export async function submitMeetRegistration(_prev: MeetState, data: FormData): 
     };
   }
 
+  if (event.seats) revalidatePath("/christmas-chaos");
   return { status: "success" };
 }

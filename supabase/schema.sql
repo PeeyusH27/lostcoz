@@ -115,6 +115,25 @@ create policy "meet_registrations: anon can insert"
 
 grant insert on public.meet_registrations to anon;
 
+-- Seats taken for an event: the ONLY thing the public key can read about the list.
+-- Returns a single number (people, not rows), so nothing personal is exposed.
+-- Refunded registrations free their seats; pending ones hold a seat.
+create or replace function public.event_seats_taken(event_slug text)
+returns integer
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select coalesce(sum(party_size), 0)::integer
+  from public.meet_registrations
+  where event = event_slug
+    and payment_status <> 'refunded';
+$$;
+
+revoke all on function public.event_seats_taken(text) from public;
+grant execute on function public.event_seats_taken(text) to anon;
+
 -- Payment screenshots. Private bucket: anon can upload, never list or download.
 -- View them in Dashboard → Storage → meet-payments, or with the secret key.
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)

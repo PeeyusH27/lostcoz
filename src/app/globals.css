@@ -364,3 +364,22 @@
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 @media (prefers-reduced-motion: reduce) { .xmas-card-in, .xmas-backdrop { animation: none; } }
+
+/* ---------- Christmas activity flip cards ---------- */
+.flip { perspective: 1200px; -webkit-tap-highlight-color: transparent; }
+.flip-inner {
+  position: relative; width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.flip.is-flipped .flip-inner,
+.flip:focus-visible .flip-inner { transform: rotateY(180deg); }
+@media (hover: hover) { .flip:hover .flip-inner { transform: rotateY(180deg); } }
+.flip-face {
+  position: absolute; inset: 0; overflow: hidden; border-radius: 1.25rem;
+  -webkit-backface-visibility: hidden; backface-visibility: hidden;
+}
+.flip-back { transform: rotateY(180deg); }
+@media (min-width: 640px) { .flip-face { border-radius: 1.5rem; } }
+.flip:focus-visible { outline: 2px solid #f6c96b; outline-offset: 4px; border-radius: 1.5rem; }
+@media (prefers-reduced-motion: reduce) { .flip-inner { transition: none; } }

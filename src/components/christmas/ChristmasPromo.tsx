@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CHRISTMAS, pillars } from "@/data/christmas";
+import { CHRISTMAS, activities } from "@/data/christmas";
 import { Confetti, SantaHat } from "./ChristmasArt";
 
 /** Lives for one page load: a reload shows the popup again, in-app navigation does not. */
@@ -26,6 +26,7 @@ export default function ChristmasPromo() {
   const onEventPage = pathname.startsWith(CHRISTMAS.href);
   const [open, setOpen] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+  const [left, setLeft] = useState<number | null>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const lastFocus = useRef<HTMLElement | null>(null);
 
@@ -40,6 +41,12 @@ export default function ChristmasPromo() {
   }, [onEventPage]);
 
   const visible = open && !onEventPage;
+  useEffect(() => {
+    if (!visible) return;
+    let alive = true;
+    fetch("/api/seats").then((r) => r.json()).then((d) => { if (alive && typeof d.left === "number") setLeft(d.left); }).catch(() => {});
+    return () => { alive = false; };
+  }, [visible]);
   useEffect(() => {
     if (!visible) return;
     window.__lenis?.stop();
@@ -116,32 +123,37 @@ export default function ChristmasPromo() {
                     </span>
                     <span className="xmas-red-text block pb-[0.06em]">Chaos</span>
                   </h2>
-                  <p className="mt-5 max-w-md text-body-lg text-pretty text-[#5b2a33]">
+                  <p className="mt-5 hidden max-w-md text-body-lg text-pretty text-[#5b2a33] sm:block">
                     Games, music, food and friendly competition, plus secret missions, Christmas Mafia and karaoke till late.
                   </p>
 
-                  <dl className="mt-7 grid grid-cols-3 divide-x divide-dashed divide-[#b3203a]/35 rounded-2xl border border-dashed border-[#b3203a]/35 bg-[#b3203a]/[0.05]">
+                  <dl className="mt-7 grid grid-cols-2 rounded-2xl border border-dashed border-[#b3203a]/35 bg-[#b3203a]/[0.05] sm:grid-cols-3">
                     {[
-                      { t: "Time", v: CHRISTMAS.windowLabel.replaceAll(" – ", "–") },
-                      { t: "Entry", v: `₹${CHRISTMAS.price.toLocaleString("en-IN")} / person` },
-                      { t: CHRISTMAS.dateLabel ? "Date" : "Dress code", v: CHRISTMAS.dateLabel ?? "Festive & fun" },
+                      { t: "Time", v: CHRISTMAS.windowLabel, mobile: true },
+                      { t: "Entry", v: `₹${CHRISTMAS.price.toLocaleString("en-IN")} / person`, mobile: true },
+                      { t: "When & where", v: [CHRISTMAS.dateLabel, CHRISTMAS.venue].filter(Boolean).join(" · "), mobile: false },
                     ].map((c) => (
-                      <div key={c.t} className="px-3 py-3 sm:px-4">
+                      <div key={c.t} className={`px-3 py-3 sm:px-4 [&:not(:first-child)]:border-l [&:not(:first-child)]:border-dashed [&:not(:first-child)]:border-[#b3203a]/35 ${c.mobile ? "" : "hidden sm:block"}`}>
                         <dt className="text-[0.58rem] font-bold uppercase tracking-[0.2em] text-[#b3203a]">{c.t}</dt>
                         <dd className="mt-1 font-display text-[0.78rem] uppercase leading-tight sm:text-sm">{c.v}</dd>
                       </div>
                     ))}
                   </dl>
 
-                  <ol className="relative mt-7 grid grid-cols-5 gap-1 text-center">
-                    <span aria-hidden="true" className="absolute left-[10%] right-[10%] top-[5px] h-px bg-[#b3203a]/30" />
-                    {pillars.map((p) => (
-                      <li key={p.name} className="relative">
-                        <span aria-hidden="true" className="mx-auto block size-[11px] rounded-full border-2 border-[#fff6e6] bg-[#b3203a] ring-1 ring-[#b3203a]/40" />
-                        <span className="mt-2 block text-[0.54rem] font-bold uppercase leading-tight tracking-[0.1em] text-[#5b2a33] sm:text-[0.6rem]">{p.name.replace(/^The /, "")}</span>
+                  <ul className="mt-6 hidden flex-wrap gap-2 sm:flex">
+                    {activities.map((a) => (
+                      <li key={a.key} className="rounded-full border border-[#b3203a]/35 bg-[#b3203a]/[0.05] px-3 py-1.5 text-[0.62rem] font-bold uppercase tracking-[0.12em] text-[#5b2a33]">
+                        {a.name} {a.accent}
                       </li>
                     ))}
-                  </ol>
+                  </ul>
+
+                  {left !== null && (
+                    <p className="mt-4 hidden items-center gap-2 text-[0.7rem] font-bold uppercase tracking-[0.18em] text-[#b3203a] sm:flex">
+                      <span aria-hidden="true" className="size-1.5 animate-pulse rounded-full bg-[#b3203a]" />
+                      {left === 0 ? "Sold out" : `${left} ${left === 1 ? "seat" : "seats"} left`}
+                    </p>
+                  )}
 
                   <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
                     <Link

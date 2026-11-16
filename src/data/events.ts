@@ -7,7 +7,7 @@ import { CHRISTMAS } from "@/data/christmas";
  * tampered form can't change what a registration is worth.
  * Each slug becomes its own tab in the Sheet (see lostcoz-sync.gs).
  */
-export const REGISTRATION_EVENTS: Record<string, { slug: string; price: number }> = {
+export const REGISTRATION_EVENTS: Record<string, { slug: string; price: number; seats?: number }> = {
   [MEET_EVENT.slug]: { slug: MEET_EVENT.slug, price: MEET_PRICE },
-  [CHRISTMAS.slug]: { slug: CHRISTMAS.slug, price: CHRISTMAS.price },
+  [CHRISTMAS.slug]: { slug: CHRISTMAS.slug, price: CHRISTMAS.price, seats: CHRISTMAS.seats },
 };

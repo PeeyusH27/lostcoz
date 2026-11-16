@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useId, useState } from "react";
+import { useActionState, useId, useState, useSyncExternalStore } from "react";
 import { cn } from "@/lib/cn";
 import { links } from "@/data/links";
 import {
@@ -108,6 +108,29 @@ function SubmitButton({ pending, total }: { pending: boolean; total: number }) {
   );
 }
 
+/** True on phone-width screens. Server and first paint say false, then it corrects itself. */
+function useIsPhone() {
+  return useSyncExternalStore(
+    (cb) => {
+      const mq = window.matchMedia("(max-width: 639px)");
+      mq.addEventListener("change", cb);
+      return () => mq.removeEventListener("change", cb);
+    },
+    () => window.matchMedia("(max-width: 639px)").matches,
+    () => false,
+  );
+}
+
+/** Native <select> in the form's field style, with a chevron. */
+function Select({ children, className, ...props }: React.SelectHTMLAttributes<HTMLSelectElement>) {
+  return (
+    <div className="relative">
+      <select {...props} className={cn(fieldBase, "appearance-none pr-11", className)}>{children}</select>
+      <span aria-hidden="true" className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-fg-subtle">▾</span>
+    </div>
+  );
+}
+
 const MB = 1024 * 1024;
 const LONG_EDGE = 2000;
 
@@ -141,6 +164,8 @@ async function shrink(file: File): Promise<File> {
 export default function MeetForm({ event = MEET_EVENT.slug, price = MEET_PRICE }: { event?: string; price?: number }) {
   const [state, formAction, pending] = useActionState(submitMeetRegistration, initialMeetState);
   const id = useId();
+  const phone = useIsPhone();
+  const [heardOther, setHeardOther] = useState(false);
 
   // Controlled so a validation round-trip doesn't wipe what was typed:
   // React resets an uncontrolled form once the action settles.
@@ -264,6 +289,19 @@ export default function MeetForm({ event = MEET_EVENT.slug, price = MEET_PRICE }
           </div>
         </Field>
 
+        {phone ? (
+          <Field label="Age" htmlFor={`${id}-age`} error={err("age_range")} errorId={describedBy("age_range")} className="sm:col-span-2">
+            <Select
+              id={`${id}-age`} name="age_range" required value={values.age_range}
+              onChange={(e) => set("age_range")(e.target.value)}
+              aria-invalid={!!err("age_range")} aria-describedby={describedBy("age_range")}
+              className={cn(borderFor(err("age_range")), !values.age_range && "text-fg-subtle")}
+            >
+              <option value="" disabled>Select your age range</option>
+              {ageRanges.map((a) => <option key={a.value} value={a.value}>{a.label}</option>)}
+            </Select>
+          </Field>
+        ) : (
         <Group label="Age" error={err("age_range")} errorId={describedBy("age_range")} className="sm:col-span-2">
           <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
             {ageRanges.map((a) => (
@@ -288,6 +326,7 @@ export default function MeetForm({ event = MEET_EVENT.slug, price = MEET_PRICE }
             ))}
           </div>
         </Group>
+        )}
 
         <Field
           label="Your company / college / school" htmlFor={`${id}-organisation`}
@@ -315,6 +354,39 @@ export default function MeetForm({ event = MEET_EVENT.slug, price = MEET_PRICE }
           />
         </Field>
 
+        {phone ? (
+          <Field
+            label="How did you hear about us?" htmlFor={`${id}-heard`}
+            error={err("heard_from")} errorId={describedBy("heard_from")}
+            className="sm:col-span-2"
+          >
+            <Select
+              id={`${id}-heard`} required
+              value={heardOther ? "other" : (heardFromSuggestions as readonly string[]).includes(values.heard_from) ? values.heard_from : ""}
+              onChange={(e) => {
+                const v = e.target.value;
+                if (v === "other") { setHeardOther(true); set("heard_from")(""); }
+                else { setHeardOther(false); set("heard_from")(v); }
+              }}
+              aria-invalid={!!err("heard_from")} aria-describedby={describedBy("heard_from")}
+              className={cn(borderFor(err("heard_from")), !heardOther && !values.heard_from && "text-fg-subtle")}
+            >
+              <option value="" disabled>Select one</option>
+              {heardFromSuggestions.map((s) => <option key={s} value={s}>{s}</option>)}
+              <option value="other">Somewhere else</option>
+            </Select>
+            {/* the value actually submitted */}
+            <input type="hidden" name="heard_from" value={values.heard_from} />
+            {heardOther && (
+              <input
+                type="text" maxLength={200} autoFocus placeholder="Tell us where"
+                aria-label="Where did you hear about us?"
+                value={values.heard_from} onChange={(e) => set("heard_from")(e.target.value)}
+                className={cn(fieldBase, "mt-3", borderFor(err("heard_from")))}
+              />
+            )}
+          </Field>
+        ) : (
         <Field
           label="How did you hear about us?" htmlFor={`${id}-heard`}
           error={err("heard_from")} errorId={describedBy("heard_from")}
@@ -344,6 +416,7 @@ export default function MeetForm({ event = MEET_EVENT.slug, price = MEET_PRICE }
             ))}
           </div>
         </Field>
+        )}
 
         <Field
           label="Number of people you’re registering for" htmlFor={`${id}-people`}
