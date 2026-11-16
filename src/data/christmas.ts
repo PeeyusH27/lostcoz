@@ -11,7 +11,7 @@ export const CHRISTMAS = {
   tagline: "A hosted house party of games, music, food and unexpected moments.",
   /** Per-person entry, in rupees. */
   price: 2500,
-  windowLabel: "7:30 PM onwards",
+  windowLabel: "6 PM onwards",
   dateLabel: "25 Dec" as string | null,
   venue: "Gurgaon" as string | null, // TODO: add the exact venue once confirmed
   seats: 30,
