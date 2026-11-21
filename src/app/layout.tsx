@@ -18,7 +18,6 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: { default: `${site.name} — ${site.tagline}`, template: `%s · ${site.name}` },
   description: site.description,
-  icons: { icon: "/brand/logo-emblem-512.png" },
   openGraph: { title: site.name, description: site.description, images: ["/brand/logo-full-onblack.png"], type: "website" },
 };
 export const viewport: Viewport = { themeColor: "#000000", colorScheme: "dark" };

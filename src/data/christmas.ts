@@ -11,6 +11,8 @@ export const CHRISTMAS = {
   tagline: "A hosted house party of games, music, food and unexpected moments.",
   /** Per-person entry, in rupees. */
   price: 2500,
+  /** Per-person entry when exactly two register together (a couple), in rupees. */
+  couplePrice: 1999,
   windowLabel: "6 PM onwards",
   dateLabel: "25 Dec" as string | null,
   venue: "Gurgaon" as string | null, // TODO: add the exact venue once confirmed
@@ -38,7 +40,7 @@ export const touches = [
 ];
 
 export const registerCopy = {
-  payTitle: `₹${CHRISTMAS.price.toLocaleString("en-IN")} per person`,
+  payTitle: `₹${CHRISTMAS.price.toLocaleString("en-IN")} per person · ₹${CHRISTMAS.couplePrice.toLocaleString("en-IN")} each for couples`,
   formTitle: "Reserve your spot",
   formLead: "One registration per WhatsApp number. Bringing friends? Set the number of people and pay for everyone.",
 };

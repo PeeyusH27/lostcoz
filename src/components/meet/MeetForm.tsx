@@ -8,6 +8,7 @@ import {
   ageRanges, heardFromSuggestions, meetCopy,
 } from "@/data/meet";
 import { submitMeetRegistration } from "@/app/meet/actions";
+import { pricePerPerson } from "@/data/events";
 import { initialMeetState } from "@/app/meet/state";
 
 /* Shared input chrome: cream-on-ink field that lights up orange on focus. */
@@ -161,7 +162,7 @@ async function shrink(file: File): Promise<File> {
   }
 }
 
-export default function MeetForm({ event = MEET_EVENT.slug, price = MEET_PRICE }: { event?: string; price?: number }) {
+export default function MeetForm({ event = MEET_EVENT.slug, price = MEET_PRICE, couplePrice }: { event?: string; price?: number; couplePrice?: number }) {
   const [state, formAction, pending] = useActionState(submitMeetRegistration, initialMeetState);
   const id = useId();
   const phone = useIsPhone();
@@ -176,7 +177,8 @@ export default function MeetForm({ event = MEET_EVENT.slug, price = MEET_PRICE }
 
   const [people, setPeople] = useState(1);
   const clampPeople = (n: number) => Math.min(MEET_MAX_PEOPLE, Math.max(1, Math.round(n) || 1));
-  const total = people * price;
+  const unit = pricePerPerson(price, couplePrice, people);
+  const total = people * unit;
 
   // The screenshot lives in state, not in the file input, for the same reason as
   // `values`: the input would be emptied after a failed submit. It is appended
@@ -424,7 +426,7 @@ export default function MeetForm({ event = MEET_EVENT.slug, price = MEET_PRICE }
           hint={people > 1 ? "Including you. Everyone else just needs to turn up." : undefined}
           className="sm:col-span-2"
         >
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
+          <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-8 sm:gap-y-2">
             <div className="flex items-stretch">
               <button
                 type="button" onClick={() => setPeople((n) => clampPeople(n - 1))} disabled={people <= 1}
@@ -455,9 +457,12 @@ export default function MeetForm({ event = MEET_EVENT.slug, price = MEET_PRICE }
               </button>
             </div>
             <p className="text-body-lg text-fg-muted" aria-live="polite">
-              ₹{price.toLocaleString("en-IN")} × {people} ={" "}
+              ₹{unit.toLocaleString("en-IN")} × {people}{unit !== price && " (couple)"} ={" "}
               <span className="font-display text-title text-brand-orange">₹{total.toLocaleString("en-IN")}</span>
             </p>
+            {couplePrice && people !== 2 && (
+              <p className="basis-full text-body-sm text-fg-muted">Coming as a couple? Set 2 people for ₹{couplePrice.toLocaleString("en-IN")} each.</p>
+            )}
           </div>
         </Field>
 

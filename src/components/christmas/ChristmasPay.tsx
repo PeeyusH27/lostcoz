@@ -6,6 +6,7 @@ import { MEET_UPI_INTENT, MEET_UPI_PAYEE, MEET_UPI_QR_SVG } from "@/data/meet";
 /** Step one: the UPI card. Sticks beside the form on desktop. */
 export default function ChristmasPay() {
   const price = CHRISTMAS.price.toLocaleString("en-IN");
+  const couple = CHRISTMAS.couplePrice.toLocaleString("en-IN");
   return (
     <div className="relative overflow-hidden rounded-3xl border border-[#f6c96b]/40 bg-gradient-to-b from-[#12503a] to-[#0b2a20] p-5 shadow-[0_30px_70px_-30px_rgb(0_0_0/0.8)] sm:p-8">
       <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-20 size-64 rounded-full bg-[#f6c96b]/20 blur-3xl" />
@@ -17,6 +18,9 @@ export default function ChristmasPay() {
         <p className="mt-5 font-display text-[clamp(2.2rem,1.6rem+3vw,3.5rem)] font-extrabold uppercase leading-none text-[#fff6e6]">
           ₹{price}
           <span className="ml-2 text-base font-bold tracking-wide text-[#f6e9d4]/70">/ person</span>
+        </p>
+        <p className="mt-3 inline-flex items-center gap-2 rounded-full border border-[#f6c96b]/50 bg-[#f6c96b]/10 px-3 py-1.5 text-sm font-semibold text-[#fff6e6]">
+          <span aria-hidden="true">♥</span> Couples: ₹{couple} each <span className="text-[#f6e9d4]/60">(₹{(CHRISTMAS.couplePrice * 2).toLocaleString("en-IN")} for 2)</span>
         </p>
 
         <div className="mt-5 flex items-center gap-4 sm:mt-6 sm:block">
@@ -34,7 +38,7 @@ export default function ChristmasPay() {
         <ol className="mt-6 space-y-2.5 text-body-sm text-[#f6e9d4]/80">
           {[
             "Scan the QR, or copy the UPI ID below.",
-            `Send ₹${price} × the number of people.`,
+            `Send ₹${price} × the number of people (couples: ₹${couple} × 2).`,
             "Screenshot the confirmation for the form.",
           ].map((t, i) => (
             <li key={t} className="flex gap-3">

@@ -29,7 +29,7 @@ export default function StickyReserve() {
         className="flex h-14 items-center justify-between rounded-full bg-[#b3203a] px-6 text-sm font-bold uppercase tracking-[0.12em] text-[#fff6e6] shadow-[0_14px_40px_-8px_rgb(0_0_0/0.8)] ring-1 ring-[#f6c96b]/60"
       >
         <span>Reserve your spot</span>
-        <span className="font-display text-[#f6c96b]">₹{CHRISTMAS.price.toLocaleString("en-IN")} →</span>
+        <span className="font-display text-[#f6c96b]">From ₹{CHRISTMAS.couplePrice.toLocaleString("en-IN")} →</span>
       </a>
     </div>
   );

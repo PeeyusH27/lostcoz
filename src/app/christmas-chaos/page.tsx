@@ -5,28 +5,21 @@ import Button from "@/components/ui/Button";
 import MeetForm from "@/components/meet/MeetForm";
 import ChristmasPay from "@/components/christmas/ChristmasPay";
 import SeatsLeft from "@/components/christmas/SeatsLeft";
+import SeatsAlert from "@/components/christmas/SeatsAlert";
 import { getSeats } from "@/lib/seats";
 import StickyReserve from "@/components/christmas/StickyReserve";
 import { Confetti, SantaHat } from "@/components/christmas/ChristmasArt";
+import { EventFacts, PriceOptions } from "@/components/christmas/EventDetails";
 import { contact, links } from "@/data/links";
 import ChristmasActivities from "@/components/christmas/ChristmasActivities";
 import { CHRISTMAS, dressCode, registerCopy, touches } from "@/data/christmas";
 
 export const metadata: Metadata = {
   title: CHRISTMAS.title,
-  description: `${CHRISTMAS.tagline} ${CHRISTMAS.windowLabel}, ₹${CHRISTMAS.price.toLocaleString("en-IN")} per person. Games, Christmas Mafia, secret missions, karaoke and awards.`,
+  description: `${CHRISTMAS.tagline} ${CHRISTMAS.windowLabel}, ₹${CHRISTMAS.price.toLocaleString("en-IN")} per person, or ₹${CHRISTMAS.couplePrice.toLocaleString("en-IN")} each for couples. Games, Christmas Mafia, secret missions, karaoke and awards.`,
   openGraph: { images: ["/photos/christmas-santa.jpg"] },
   robots: { index: true, follow: true },
 };
-
-const price = `₹${CHRISTMAS.price.toLocaleString("en-IN")}`;
-
-const facts = [
-  { term: "Date", value: CHRISTMAS.dateLabel ?? "Soon" },
-  { term: "Venue", value: CHRISTMAS.venue ?? "To be announced" },
-  { term: "Time", value: CHRISTMAS.windowLabel },
-  { term: "Entry", value: `${price} / person` },
-];
 
 export const revalidate = 30;
 
@@ -38,52 +31,52 @@ export default async function ChristmasChaosPage() {
       <StickyReserve />
 
       {/* Hero */}
-      <section className="xmas-promo relative overflow-hidden px-gutter pb-12 pt-24 sm:pb-20 sm:pt-36" style={{ animation: "none" }}>
+      <section className="xmas-promo relative overflow-hidden px-gutter pb-14 pt-24 sm:pb-20 sm:pt-32 lg:pb-24 lg:pt-36" style={{ animation: "none" }}>
         <Confetti />
-        <div className="relative z-[2] mx-auto grid max-w-wide items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
-          <div className="text-center lg:text-left">
-            <p className="xmas-glass inline-flex rounded-full px-4 py-2 text-[0.66rem] font-bold uppercase tracking-[0.24em] text-[#ffe7a8]">
-              Lostcoz presents · hosted house party
+        <div className="relative z-[2] mx-auto grid max-w-wide items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-16">
+          <div className="mx-auto w-full max-w-xl text-center lg:mx-0 lg:text-left">
+            <p className="xmas-glass inline-flex items-center gap-2 rounded-full px-4 py-2 text-[0.62rem] font-bold uppercase tracking-[0.24em] text-[#ffe7a8]">
+              <span aria-hidden="true" className="size-1.5 rounded-full bg-[#f6c96b]" /> Lostcoz presents · house party
             </p>
-            <h1 className="mt-9 font-display sm:mt-10 text-[clamp(2.8rem,1.2rem+7vw,6.5rem)] font-extrabold uppercase leading-[0.9] tracking-[-0.035em] text-[#fff6e6]">
+            <h1 className="mt-8 font-display text-[clamp(2.9rem,1.2rem+7vw,6.25rem)] font-extrabold uppercase leading-[0.9] tracking-[-0.035em] text-[#fff6e6] sm:mt-10">
               <span className="relative inline-block">
                 <SantaHat className="absolute -left-[0.14em] -top-[0.4em] w-[0.58em] -rotate-[16deg]" />
                 Christmas
               </span>
               <span className="xmas-gold-text block pb-[0.06em]">Chaos</span>
             </h1>
-            <p className="mx-auto mt-5 max-w-lg text-body-lg sm:mt-6 sm:text-body-xl text-pretty text-[#f6e9d4] lg:mx-0">
+            <p className="mx-auto mt-4 max-w-lg text-body-lg text-pretty text-[#f6e9d4]/90 sm:mt-6 sm:text-body-xl lg:mx-0">
               Games, music, food and friendly competition, with secret missions, Christmas Mafia and karaoke till late.
             </p>
 
-            <dl className="xmas-glass mx-auto mt-8 grid max-w-xl grid-cols-2 gap-px overflow-hidden rounded-2xl bg-[#f6e9d4]/20 sm:grid-cols-4 lg:mx-0">
-              {facts.map((f) => (
-                <div key={f.term} className="bg-[#3d0c16]/70 p-4 text-left">
-                  <dt className="text-[0.58rem] font-bold uppercase tracking-[0.2em] text-[#f6c96b]">{f.term}</dt>
-                  <dd className="mt-1 font-display text-sm uppercase leading-tight text-[#fff6e6]">{f.value}</dd>
-                </div>
-              ))}
-            </dl>
+            <EventFacts tone="dark" className="mt-8" />
+            <PriceOptions tone="dark" className="mt-2" />
 
-            <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row lg:justify-start">
-              <Button href="#register" variant="inverse" size="lg" magnetic={false}>Reserve · {price}</Button>
-              <a href="#plan" className="px-4 py-3 text-xs font-bold uppercase tracking-[0.14em] text-[#f6e9d4]/80 underline-offset-4 hover:text-[#fff6e6] hover:underline">
-                See the plan
-              </a>
+            <div className="mt-7 flex flex-col items-stretch gap-4 sm:flex-row sm:items-center lg:justify-start">
+              <Button href="#register" variant="inverse" size="lg" magnetic={false} className="w-full sm:w-auto">Reserve your spot</Button>
+              <SeatsLeft seats={seats} total={CHRISTMAS.seats} className="items-center sm:items-start" />
             </div>
-            <SeatsLeft seats={seats} total={CHRISTMAS.seats} className="mt-6 items-center lg:items-start" />
+            <a href="#plan" className="mt-4 inline-block px-1 py-2 text-xs font-bold uppercase tracking-[0.14em] text-[#f6e9d4]/75 underline-offset-4 hover:text-[#fff6e6] hover:underline">
+              See the plan ↓
+            </a>
           </div>
 
-          <div className="mx-auto w-full max-w-sm sm:max-w-md lg:max-w-none">
+          <div className="mx-auto w-full max-w-sm sm:max-w-md lg:max-w-[30rem] lg:justify-self-end">
             <div className="xmas-ticket xmas-float">
               <div className="xmas-zig">
-                <div className="xmas-punch relative aspect-[5/4] bg-[#3d0c16] sm:aspect-[4/5]">
-                  <Image src="/photos/christmas-santa.jpg" alt="Santa in a mask holding a staff, lit by red fairy lights" fill priority sizes="(min-width: 1024px) 32rem, 90vw" className="object-cover object-[50%_20%]" />
-                  <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,transparent_55%,rgb(61_12_22/0.75)_100%)]" />
-                  <p className="absolute inset-x-6 bottom-9 flex items-end justify-between text-[#fff6e6]">
-                    <span className="font-display text-sm uppercase tracking-wider">Admit one</span>
-                    <span className="font-display text-3xl font-extrabold text-[#f6c96b]">{price}</span>
+                <div className="xmas-punch relative aspect-[4/3] bg-[#3d0c16] sm:aspect-[4/5]">
+                  <Image src="/photos/christmas-santa.jpg" alt="Santa in a mask holding a staff, lit by red fairy lights" fill priority sizes="(min-width: 1024px) 30rem, 90vw" className="object-cover object-[50%_15%]" />
+                  <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(180deg,rgb(61_12_22/0.25)_0%,transparent_25%,transparent_50%,rgb(61_12_22/0.85)_100%)]" />
+                  <p className="absolute left-5 top-7 inline-flex items-center gap-2 rounded-full border border-[#f6c96b]/50 bg-[#3d0c16]/40 px-3 py-1.5 text-[0.6rem] font-bold uppercase tracking-[0.24em] text-[#ffe7a8] backdrop-blur-sm sm:left-6 sm:top-9">
+                    <span aria-hidden="true" className="size-1.5 rounded-full bg-[#f6c96b]" /> Admit one
                   </p>
+                  <div className="absolute inset-x-5 bottom-7 flex items-end justify-between gap-4 text-[#fff6e6] sm:inset-x-6 sm:bottom-9">
+                    <div>
+                      <p className="text-[0.6rem] font-bold uppercase tracking-[0.24em] text-[#f6c96b]">{CHRISTMAS.venue ?? "Venue soon"}</p>
+                      <p className="mt-1 font-display text-3xl font-extrabold uppercase leading-none sm:text-4xl">{CHRISTMAS.dateLabel ?? "Soon"}</p>
+                    </div>
+                    <p className="text-right font-display text-sm uppercase leading-tight text-[#fff6e6]/85">{CHRISTMAS.windowLabel}</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -122,7 +115,6 @@ export default async function ChristmasChaosPage() {
           <Reveal y={28} className="mx-auto max-w-2xl text-center">
             <p className="eyebrow text-[#f6c96b]">Reserve your spot</p>
             <h2 className="mt-3 font-display text-display-md uppercase text-[#fff6e6]">Pay, then register</h2>
-            <SeatsLeft seats={seats} total={CHRISTMAS.seats} className="mt-4 items-center" />
             <p className="mt-4 text-body-lg text-pretty text-[#f6e9d4]/80">{registerCopy.formLead}</p>
           </Reveal>
 
@@ -142,7 +134,10 @@ export default async function ChristmasChaosPage() {
                   <div className="mt-6 flex justify-center"><Button href={links.whatsappDirect} variant="inverse" magnetic={false}>Join the waitlist</Button></div>
                 </div>
               ) : (
-                <MeetForm event={CHRISTMAS.slug} price={CHRISTMAS.price} />
+                <>
+                  <SeatsAlert seats={seats} total={CHRISTMAS.seats} className="sticky top-20 z-20 mb-5 lg:top-24" />
+                  <MeetForm event={CHRISTMAS.slug} price={CHRISTMAS.price} couplePrice={CHRISTMAS.couplePrice} />
+                </>
               )}
             </div>
           </div>

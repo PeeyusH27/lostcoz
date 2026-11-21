@@ -8,7 +8,7 @@ import {
   MEET_EVENT, MEET_MAX_PEOPLE, SCREENSHOT_TYPES, SCREENSHOT_UPLOAD_MAX_MB, ageRanges,
 } from "@/data/meet";
 import { revalidatePath } from "next/cache";
-import { REGISTRATION_EVENTS } from "@/data/events";
+import { REGISTRATION_EVENTS, pricePerPerson } from "@/data/events";
 import { getSeats } from "@/lib/seats";
 import type { MeetState } from "@/app/meet/state";
 
@@ -102,7 +102,7 @@ export async function submitMeetRegistration(_prev: MeetState, data: FormData): 
       heard_from: heardFrom,
       favourite_game: favouriteGame,
       party_size: partySize,
-      amount_due: partySize * event.price,
+      amount_due: partySize * pricePerPerson(event.price, event.couplePrice, partySize),
       screenshot_path: screenshotPath,
       source_ip: forwardedFor?.split(",")[0]?.trim() || null,
     });
